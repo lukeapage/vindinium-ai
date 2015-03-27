@@ -1,20 +1,36 @@
-function parseMap(board) {
+/*
+ ## Impassible Woods
+ @1 Hero number 1
+ [] Tavern
+ $- Gold mine (neutral)
+ $1 Gold mine (belonging to hero 1)*/
+
+var impassibleWoods = "##",
+    tavern = "[]",
+    goldMineStartsWith = "$";
+
+function parseMap(board, heroid) {
+
     var size = board.size;
     var tiles = board.tiles;
     var map = [];
+    var taverns = [];
     var i = 0;
     for(var y = 0; y < size; y++) {
         var row = [];
         map.push(row);
         for(var x = 0; x < size; x++) {
-            row.push(tiles.substr(i, 2));
+            var tile = tiles.substr(i, 2);
+            if (tile === tavern) {
+                taverns.push({x:x, y:y});
+            }
+            row.push(tile);
             i+=2;
         }
     }
-    return { map: map };
+    return { map: map, taverns: taverns };
 }
 
-var impassibleWoods = "##";
 
 /*
 { game: {
@@ -46,16 +62,37 @@ var impassibleWoods = "##";
 */
 function bot(state, callback) {
 
-    var map = parseMap(state.game.board).map;
+    var map = parseMap(state.game.board, state.hero.id).map;
 
-    var above = state.hero.pos.y === 0 ? null : map[state.hero.pos.y - 1][state.hero.pos.x];
-
-    if (above === impassibleWoods) {
-        above = null;
+    function canMoveToTile(x, y) {
+        if (x < 0 || x >= map.length) {
+            return false;
+        }
+        if (y < 0 || y >= map.length) {
+            return false;
+        }
+        if (map[y][x] === impassibleWoods) {
+            return false;
+        }
+        return true;
     }
 
-    var possibilities = above ? 4 : 3;
-    var dirs = above ? 'nesw' : 'esw';
+    // x,y is the wrong way round?!
+    var dirs = "";
+    if (canMoveToTile(state.hero.pos.y, state.hero.pos.x - 1)) {
+        dirs += "n";
+    }
+    if (canMoveToTile(state.hero.pos.y, state.hero.pos.x + 1)) {
+        dirs += "s";
+    }
+    if (canMoveToTile(state.hero.pos.y + 1, state.hero.pos.x)) {
+        dirs += "e";
+    }
+    if (canMoveToTile(state.hero.pos.y - 1, state.hero.pos.x)) {
+        dirs += "w";
+    }
+
+    var possibilities = dirs.length;
 
     var i = Math.floor(Math.random() * possibilities);
     var dir = dirs[i];
