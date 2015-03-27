@@ -1,0 +1,22 @@
+{
+  "name": "virdinium-ai",
+  "version": "0.0.1",
+  "description": "Virdinium Ai",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/lukeapage/virdinium-ai.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/lukeapage/virdinium-ai/issues"
+  },
+  "homepage": "https://github.com/lukeapage/virdinium-ai",
+  "dependencies": {
+    "vindinium-client": "^2.0.1"
+  }
+}
