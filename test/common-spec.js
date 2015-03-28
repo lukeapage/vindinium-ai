@@ -41,9 +41,9 @@ describe('common', function(){
             expect(common.canMoveToTile(variedMap, 2, 1, false, false)).to.equal(false);
         });
         it("should handle gold mines", function() {
-            expect(common.canMoveToTile(variedMap, 0, 3, false, false)).to.equal(false);
+            expect(common.canMoveToTile(variedMap, 3, 0, false, false)).to.equal(false);
             expect(common.canMoveToTile(variedMap, 2, 2, false, false)).to.equal(false);
-            expect(common.canMoveToTile(variedMap, 0, 3, false, true)).to.equal(true);
+            expect(common.canMoveToTile(variedMap, 3, 0, false, true)).to.equal(true);
             expect(common.canMoveToTile(variedMap, 2, 2, false, true)).to.equal(true);
         });
     });

@@ -1,5 +1,6 @@
-
-
+var common = require("../src/common");
+var parseMap = require("../src/map");
+var routeTo = require("../src/routeTo");
 
 /*
 { game: {
@@ -32,29 +33,29 @@
 function bot(state, callback) {
 
     var mapData = parseMap(state.game.board, state.hero.id),
-        map = mapData.map;
+        map = mapData.map,
+        heroPosition = {x: state.hero.pos.y, y: state.hero.pos.x};
 
-    var nearestGoldMine = closestPosition(state.hero.pos.y, state.hero.pos.x, mapData.freeGoldMines);
+    var nearestGoldMine = common.closestPosition(heroPosition, mapData.freeGoldMines);
     if (nearestGoldMine) {
-        console.log("found gold mine");
-        var direction = routeTo({x:state.hero.pos.y, y:state.hero.pos.x}, nearestGoldMine, map);
+        var direction = routeTo(heroPosition, nearestGoldMine.position, map);
         if (direction) {
             callback(null, direction);
             return;
         }
     }
-    // x,y is the wrong way round?! bug in the node implementation??!
+
     var dirs = "";
-    if (canMoveToTile(map, state.hero.pos.y, state.hero.pos.x - 1, state.hero.life < 40, true) && state.hero.lastDir !== "South") {
+    if (common.canMoveToTile(map, state.hero.pos.y, state.hero.pos.x - 1, state.hero.life < 40, true) && state.hero.lastDir !== "South") {
         dirs += "n";
     }
-    if (canMoveToTile(map, state.hero.pos.y, state.hero.pos.x + 1, state.hero.life < 40, true) && state.hero.lastDir !== "North") {
+    if (common.canMoveToTile(map, state.hero.pos.y, state.hero.pos.x + 1, state.hero.life < 40, true) && state.hero.lastDir !== "North") {
         dirs += "s";
     }
-    if (canMoveToTile(map, state.hero.pos.y + 1, state.hero.pos.x, state.hero.life < 40, true) && state.hero.lastDir !== "West") {
+    if (common.canMoveToTile(map, state.hero.pos.y + 1, state.hero.pos.x, state.hero.life < 40, true) && state.hero.lastDir !== "West") {
         dirs += "e";
     }
-    if (canMoveToTile(map, state.hero.pos.y - 1, state.hero.pos.x, state.hero.life < 40, true) && state.hero.lastDir !== "East") {
+    if (common.canMoveToTile(map, state.hero.pos.y - 1, state.hero.pos.x, state.hero.life < 40, true) && state.hero.lastDir !== "East") {
         dirs += "w";
     }
 

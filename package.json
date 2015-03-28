@@ -1,10 +1,10 @@
 {
   "name": "virdinium-ai",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "Virdinium Ai",
   "main": "index.js",
   "scripts": {
-    "test": "node bot.js -t 1 --map m1 config.json"
+    "test": "node src/bot.js -t 1 --map m1 config.json"
   },
   "repository": {
     "type": "git",
