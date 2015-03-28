@@ -2,6 +2,16 @@ var common = require("../src/common");
 var parseMap = require("../src/map");
 var routeTo = require("../src/routeTo");
 
+function nearestDirection(heroPosition, map, places) {
+    var sortedPlaces = common.sortPositionsByDistance(heroPosition, places);
+    for(var i = 0; i < sortedPlaces.length; i++) {
+        var direction = routeTo(heroPosition, sortedPlaces[i].position, map);
+        if (direction) {
+            return direction;
+        }
+    }
+}
+
 /*
 { game: {
         id: 'deg0lu5e',
@@ -36,13 +46,24 @@ function bot(state, callback) {
         map = mapData.map,
         heroPosition = {x: state.hero.pos.y, y: state.hero.pos.x};
 
-    var nearestGoldMine = common.closestPosition(heroPosition, mapData.freeGoldMines);
-    if (nearestGoldMine) {
-        var direction = routeTo(heroPosition, nearestGoldMine.position, map);
-        if (direction) {
-            callback(null, direction);
+    if (state.hero.life < 40) {
+        var dir = nearestDirection(heroPosition, map, mapData.taverns);
+        if (dir) {
+            callback(null, dir);
             return;
         }
+    }
+
+    var dir = nearestDirection(heroPosition, map, mapData.freeGoldMines);
+    if (dir) {
+        callback(null, dir);
+        return;
+    }
+
+    var dir = nearestDirection(heroPosition, map, mapData.taverns);
+    if (dir) {
+        callback(null, dir);
+        return;
     }
 
     var dirs = "";

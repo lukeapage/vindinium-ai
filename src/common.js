@@ -12,7 +12,7 @@ function distance(p1, p2) {
     return dimensionDistance(p1.x, p2.x) + dimensionDistance(p1.y, p2.y);
 }
 
-function closestPosition(p1, list) {
+function sortPositionsByDistance(p1, list) {
     var x = p1.x;
     var y = p1.y;
     return list.map(function(position) {
@@ -24,7 +24,7 @@ function closestPosition(p1, list) {
             return 1;
         }
         return 0;
-    })[0];
+    });
 }
 
 function canMoveToTile(map, x, y, taverns, goldMines) {
@@ -57,6 +57,6 @@ function allDirections(func) {
 }
 
 exports.canMoveToTile = canMoveToTile;
-exports.closestPosition = closestPosition;
+exports.sortPositionsByDistance = sortPositionsByDistance;
 exports.distance = distance;
 exports.allDirections = allDirections;
