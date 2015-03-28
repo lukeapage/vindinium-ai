@@ -18,5 +18,12 @@
   "homepage": "https://github.com/lukeapage/virdinium-ai",
   "dependencies": {
     "vindinium-client": "^2.0.1"
+  },
+  "devDependencies": {
+    "chai": "^2.2.0",
+    "grunt": "^0.4.5",
+    "grunt-mocha-test": "^0.12.7",
+    "load-grunt-config": "^0.16.0",
+    "mocha": "^2.2.1"
   }
 }

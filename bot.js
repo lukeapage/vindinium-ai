@@ -1,35 +1,4 @@
-/*
- ## Impassible Woods
- @1 Hero number 1
- [] Tavern
- $- Gold mine (neutral)
- $1 Gold mine (belonging to hero 1)*/
 
-var impassibleWoods = "##",
-    tavern = "[]",
-    goldMineStartsWith = "$";
-
-function parseMap(board, heroid) {
-
-    var size = board.size;
-    var tiles = board.tiles;
-    var map = [];
-    var taverns = [];
-    var i = 0;
-    for(var y = 0; y < size; y++) {
-        var row = [];
-        map.push(row);
-        for(var x = 0; x < size; x++) {
-            var tile = tiles.substr(i, 2);
-            if (tile === tavern) {
-                taverns.push({x:x, y:y});
-            }
-            row.push(tile);
-            i+=2;
-        }
-    }
-    return { map: map, taverns: taverns };
-}
 
 
 /*
@@ -62,33 +31,30 @@ function parseMap(board, heroid) {
 */
 function bot(state, callback) {
 
-    var map = parseMap(state.game.board, state.hero.id).map;
+    var mapData = parseMap(state.game.board, state.hero.id),
+        map = mapData.map;
 
-    function canMoveToTile(x, y) {
-        if (x < 0 || x >= map.length) {
-            return false;
+    var nearestGoldMine = closestPosition(state.hero.pos.y, state.hero.pos.x, mapData.freeGoldMines);
+    if (nearestGoldMine) {
+        console.log("found gold mine");
+        var direction = routeTo({x:state.hero.pos.y, y:state.hero.pos.x}, nearestGoldMine, map);
+        if (direction) {
+            callback(null, direction);
+            return;
         }
-        if (y < 0 || y >= map.length) {
-            return false;
-        }
-        if (map[y][x] === impassibleWoods) {
-            return false;
-        }
-        return true;
     }
-
-    // x,y is the wrong way round?!
+    // x,y is the wrong way round?! bug in the node implementation??!
     var dirs = "";
-    if (canMoveToTile(state.hero.pos.y, state.hero.pos.x - 1)) {
+    if (canMoveToTile(map, state.hero.pos.y, state.hero.pos.x - 1, state.hero.life < 40, true) && state.hero.lastDir !== "South") {
         dirs += "n";
     }
-    if (canMoveToTile(state.hero.pos.y, state.hero.pos.x + 1)) {
+    if (canMoveToTile(map, state.hero.pos.y, state.hero.pos.x + 1, state.hero.life < 40, true) && state.hero.lastDir !== "North") {
         dirs += "s";
     }
-    if (canMoveToTile(state.hero.pos.y + 1, state.hero.pos.x)) {
+    if (canMoveToTile(map, state.hero.pos.y + 1, state.hero.pos.x, state.hero.life < 40, true) && state.hero.lastDir !== "West") {
         dirs += "e";
     }
-    if (canMoveToTile(state.hero.pos.y - 1, state.hero.pos.x)) {
+    if (canMoveToTile(map, state.hero.pos.y - 1, state.hero.pos.x, state.hero.life < 40, true) && state.hero.lastDir !== "East") {
         dirs += "w";
     }
 
