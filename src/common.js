@@ -28,7 +28,7 @@ function sortPositionsByDistance(p1, list) {
 }
 
 function canMoveToTile(map, x, y, taverns, goldMines) {
-    if (x < 0 || x >= map.length) {
+    if (x < 0 || x >= map[0].length) {
         return false;
     }
     if (y < 0 || y >= map.length) {

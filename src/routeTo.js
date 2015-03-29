@@ -27,7 +27,7 @@ function testDirection(positionFrom, positionTo, map, oldRoute, routes, movement
         }
 
         routes.push({
-            previousMoves: [].concat(oldRoute ? oldRoute.previousMoves : [], newPosition),
+            previousMoves: [].concat(oldRoute ? oldRoute.previousMoves : [positionFrom], newPosition),
             initialDir: oldRoute ? oldRoute.initialDir : direction,
             positionFrom: newPosition,
             moves: (oldRoute ? oldRoute.moves : 0) + 1,
@@ -71,11 +71,11 @@ function routeTo(positionFrom, positionTo, map) {
                     fastestRoute = currentRoute;
                     minimumMoves = currentRoute.moves;
                     if (minimumMoves === totalDistance) {
-                        return fastestRoute.initialDir;
+                        return fastestRoute;
                     }
                 }
             } else if (currentRoute.moves + currentRoute.distance < minimumMoves) {
-                common.allDirections(testDirection.bind(null, routes[i].positionFrom, positionTo, map, routes[i], newRoutes));
+                common.allDirections(testDirection.bind(null, routes[i].positionFrom, positionTo, map, currentRoute, newRoutes));
             }
         }
         for(var i = topRoutesLength; i < routes.length; i++) {
@@ -88,7 +88,7 @@ function routeTo(positionFrom, positionTo, map) {
         routes = newRoutes;
     }
 
-    return fastestRoute ? fastestRoute.initialDir : null;
+    return fastestRoute;
 }
 
 module.exports = routeTo;
