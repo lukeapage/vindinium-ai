@@ -12,7 +12,7 @@ function distance(p1, p2) {
     return dimensionDistance(p1.x, p2.x) + dimensionDistance(p1.y, p2.y);
 }
 
-function sortPositionsByDistance(p1, list) {
+function sortPositionsByCrowDistance(p1, list) {
     var x = p1.x;
     var y = p1.y;
     return list.map(function(position) {
@@ -56,7 +56,20 @@ function allDirections(func) {
     func( -1,  0, "w");
 }
 
+function find(list, predicate) {
+    var value;
+
+    for (var i = 0; i < list.length; i++) {
+        value = list[i];
+        if (predicate.call(null, value, i, list)) {
+            return value;
+        }
+    }
+    return undefined;
+}
+
 exports.canMoveToTile = canMoveToTile;
-exports.sortPositionsByDistance = sortPositionsByDistance;
+exports.sortPositionsByCrowDistance = sortPositionsByCrowDistance;
 exports.distance = distance;
 exports.allDirections = allDirections;
+exports.find = find;

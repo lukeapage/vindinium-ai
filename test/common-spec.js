@@ -10,12 +10,12 @@ describe('common', function(){
             expect(common.distance({x: 1, y: 1}, {x: 0, y: 0})).to.equal(2);
         });
     });
-    describe("sortPositionsByDistance", function() {
+    describe("sortPositionsByCrowDistance", function() {
         it("should work", function() {
-            expect(common.sortPositionsByDistance({x: 0, y: 0}, [])).to.deep.equal([]);
-            expect(common.sortPositionsByDistance({x: 0, y: 0}, [{x: 0, y: 0}])).to.deep.equal([{distance: 0, position: { x: 0, y: 0}}]);
-            expect(common.sortPositionsByDistance({x: 0, y: 0}, [{x: 0, y: 0}, {x: 1, y: 1}])).to.deep.equal([{distance: 0, position: {x: 0, y: 0}}, {distance: 2, position: {x: 1, y: 1}}]);
-            expect(common.sortPositionsByDistance({x: 0, y: 0}, [{x: 2, y: 1}, {x: 1, y: 1}])).to.deep.equal([{distance: 2, position: {x: 1, y: 1}}, {distance: 3, position: {x: 2, y: 1}}]);
+            expect(common.sortPositionsByCrowDistance({x: 0, y: 0}, [])).to.deep.equal([]);
+            expect(common.sortPositionsByCrowDistance({x: 0, y: 0}, [{x: 0, y: 0}])).to.deep.equal([{distance: 0, position: { x: 0, y: 0}}]);
+            expect(common.sortPositionsByCrowDistance({x: 0, y: 0}, [{x: 0, y: 0}, {x: 1, y: 1}])).to.deep.equal([{distance: 0, position: {x: 0, y: 0}}, {distance: 2, position: {x: 1, y: 1}}]);
+            expect(common.sortPositionsByCrowDistance({x: 0, y: 0}, [{x: 2, y: 1}, {x: 1, y: 1}])).to.deep.equal([{distance: 2, position: {x: 1, y: 1}}, {distance: 3, position: {x: 2, y: 1}}]);
         });
     });
     describe("canMoveToTile", function () {

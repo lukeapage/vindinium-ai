@@ -1,23 +1,11 @@
 var common = require("./common");
 
-function find(list, predicate) {
-    var value;
-
-    for (var i = 0; i < list.length; i++) {
-        value = list[i];
-        if (predicate.call(null, value, i, list)) {
-            return value;
-        }
-    }
-    return undefined;
-}
-
 function testDirection(positionFrom, positionTo, map, oldRoute, routes, movementX, movementY, direction) {
     var newPosition = {x: positionFrom.x + movementX, y: positionFrom.y + movementY};
     if (common.canMoveToTile(map, newPosition.x, newPosition.y) || (newPosition.y === positionTo.y && newPosition.x === positionTo.x)) {
 
         if (oldRoute) {
-            if (find(oldRoute.previousMoves, function(previousPosition) {
+            if (common.find(oldRoute.previousMoves, function(previousPosition) {
                     if (previousPosition.x === newPosition.x && previousPosition.y === newPosition.y) {
                         return true;
                     }

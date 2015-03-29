@@ -1,5 +1,5 @@
 var expect = require('chai').expect;
-var routeTo = require("../src/routeTo");
+var routeTo = require("../src/route-to");
 var blankMap = require("./test-map-blank");
 var variedMap = require("./test-map-varied");
 var mazeMap = require("./test-map-maze");

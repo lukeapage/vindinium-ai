@@ -20,7 +20,7 @@ function parseMap(board, heroid) {
                 taverns.push(position);
             } else if (tile[0] === legend.goldMineStartsWith && tile[1] !== String(heroid)) {
                 freeGoldMines.push(position);
-                if (tile[1] !== "_") {
+                if (tile[1] !== "-") {
                     if (!enemyGoldMines[tile[1]]) {
                         enemyGoldMines[tile[1]] = { count: 0, positions: [] };
                     }
