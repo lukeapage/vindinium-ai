@@ -17,10 +17,14 @@ function getEnemyData(mapData, heroes) {
         return 0;
     }).map(function(enemyId) {
         var enemyStats = common.find(heroes, function(hero) {
-            if (hero.id === enemyId) {
+            if (String(hero.id) === String(enemyId)) {
                 return true;
             }
         });
+        if (!enemyStats) {
+            console.warn("Couldn't find stats for " + enemyId);
+            console.dir(heroes);
+        }
         var enemyData = {
             id: enemyId,
             goldMines: mapData.enemyGoldMines[enemyId],
