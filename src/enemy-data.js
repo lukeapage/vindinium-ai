@@ -1,3 +1,5 @@
+var common = require("./common");
+
 function getEnemyData(mapData, heroes) {
     var enemiesWithGoldMines = Object.keys(mapData.enemyGoldMines),
         enemiesMapped = {};
@@ -26,6 +28,7 @@ function getEnemyData(mapData, heroes) {
             enemyStats: enemyStats
         };
         enemiesMapped[enemyId] = enemyData;
+        return enemyData;
     });
 
     return {sortedByGoldMine: sortedByGoldMine, mapped: enemiesMapped};

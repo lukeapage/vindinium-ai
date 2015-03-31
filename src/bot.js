@@ -50,7 +50,7 @@ function bot(state, callback) {
 
     var enemyData = getEnemyData(mapData, state.game.heroes);
 
-    if (enemyData.sortedByGoldMine.length && enemyData.sortedByGoldMine[0].goldMines.count > 1 &&
+    if (enemyData.sortedByGoldMine.length > 0 && enemyData.sortedByGoldMine[0].goldMines.count > 1 &&
         enemyData.sortedByGoldMine[0].enemyStats.life < state.hero.life) {
         var enemyPosition = enemyData.sortedByGoldMine[0].position;
 

@@ -40,7 +40,7 @@ function routeSorter(a, b) {
     return 0;
 }
 
-function routeTo(positionFrom, positionTo, map) {
+function routeTo(positionFrom, positionTo, map, routeScorer) {
     var routes = [];
 
     common.allDirections(testDirection.bind(null, positionFrom, positionTo, map, null, routes));
