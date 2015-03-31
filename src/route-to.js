@@ -1,5 +1,13 @@
 var common = require("./common");
 
+function scorePosition(oldRoute) {
+    return oldRoute ? oldRoute.score + 1 : 1;
+}
+
+function estimateRouteScore(route) {
+    return route.distance + route.score;
+}
+
 function testDirection(positionFrom, positionTo, map, oldRoute, routes, movementX, movementY, direction) {
     var newPosition = {x: positionFrom.x + movementX, y: positionFrom.y + movementY};
     if (common.canMoveToTile(map, newPosition.x, newPosition.y) || (newPosition.y === positionTo.y && newPosition.x === positionTo.x)) {
@@ -19,7 +27,8 @@ function testDirection(positionFrom, positionTo, map, oldRoute, routes, movement
             initialDir: oldRoute ? oldRoute.initialDir : direction,
             positionFrom: newPosition,
             moves: (oldRoute ? oldRoute.moves : 0) + 1,
-            distance: common.distance(newPosition, positionTo)
+            distance: common.distance(newPosition, positionTo),
+            score: scorePosition(oldRoute)
         });
     }
 }
@@ -46,7 +55,7 @@ function routeTo(positionFrom, positionTo, map, routeScorer) {
     common.allDirections(testDirection.bind(null, positionFrom, positionTo, map, null, routes));
     routes.sort(routeSorter);
 
-    var minimumMoves = Infinity;
+    var bestScore = Infinity;
     var totalDistance = common.distance(positionFrom, positionTo);
     var fastestRoute;
     while(routes.length) {
@@ -55,20 +64,19 @@ function routeTo(positionFrom, positionTo, map, routeScorer) {
         for(var i = 0; i < topRoutesLength; i++) {
             var currentRoute = routes[i];
             if (currentRoute.distance === 0) {
-                if (currentRoute.moves < minimumMoves) {
+                var currentRouteScore = currentRoute.score;
+                if (currentRouteScore < bestScore) {
                     fastestRoute = currentRoute;
-                    minimumMoves = currentRoute.moves;
-                    if (minimumMoves === totalDistance) {
-                        return fastestRoute;
-                    }
+                    bestScore = currentRouteScore;
+                    //TODO worth working out is the best route?
                 }
-            } else if (currentRoute.moves + currentRoute.distance < minimumMoves) {
+            } else if (estimateRouteScore(currentRoute) < bestScore) {
                 common.allDirections(testDirection.bind(null, routes[i].positionFrom, positionTo, map, currentRoute, newRoutes));
             }
         }
         for(var i = topRoutesLength; i < routes.length; i++) {
             var currentRoute = routes[i];
-            if (currentRoute.moves + currentRoute.distance < minimumMoves) {
+            if (estimateRouteScore(currentRoute) < bestScore) {
                 newRoutes.push(routes[i]);
             }
         }
