@@ -1,4 +1,4 @@
-var common = require("./common");
+import common = require("./common");
 
 function getRandomMove(map, currentPos) {
 
@@ -14,4 +14,4 @@ function getRandomMove(map, currentPos) {
     return dirs[i];
 }
 
-module.exports = getRandomMove;
+export = getRandomMove;

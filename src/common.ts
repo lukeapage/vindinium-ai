@@ -1,6 +1,6 @@
-var legend = require("./legend");
+import legend = require("./legend");
 
-function dimensionDistance(x1, x2) {
+export function dimensionDistance(x1, x2) {
     var distance = x1 - x2;
     if (distance < 0) {
         distance *= -1;
@@ -8,11 +8,11 @@ function dimensionDistance(x1, x2) {
     return distance;
 }
 
-function distance(p1, p2) {
+export function distance(p1, p2) {
     return dimensionDistance(p1.x, p2.x) + dimensionDistance(p1.y, p2.y);
 }
 
-function sortPositionsByCrowDistance(p1, list) {
+export function sortPositionsByCrowDistance(p1, list) {
     var x = p1.x;
     var y = p1.y;
     return list.map(function(position) {
@@ -27,7 +27,7 @@ function sortPositionsByCrowDistance(p1, list) {
     });
 }
 
-function canMoveToTile(map, x, y, taverns, goldMines) {
+export function canMoveToTile(map, x, y, taverns ?: boolean, goldMines ?: boolean) {
     if (x < 0 || x >= map[0].length) {
         return false;
     }
@@ -49,14 +49,14 @@ function canMoveToTile(map, x, y, taverns, goldMines) {
     return true;
 }
 
-function allDirections(func) {
+export function allDirections(func) {
     func( 0, -1, "n");
     func( 0,  1, "s");
     func( 1,  0, "e");
     func( -1,  0, "w");
 }
 
-function find(list, predicate) {
+export function find(list, predicate) {
     var value;
 
     for (var i = 0; i < list.length; i++) {
@@ -67,9 +67,3 @@ function find(list, predicate) {
     }
     return undefined;
 }
-
-exports.canMoveToTile = canMoveToTile;
-exports.sortPositionsByCrowDistance = sortPositionsByCrowDistance;
-exports.distance = distance;
-exports.allDirections = allDirections;
-exports.find = find;

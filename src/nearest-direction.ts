@@ -1,7 +1,7 @@
 var common = require("./common");
 var routeTo = require("./route-to");
 
-function nearestDirection(heroPosition, map, places) {
+function nearestDirection(heroPosition : VPosition, map : string[][], places: VPosition[]) {
     var sortedPlaces = common.sortPositionsByCrowDistance(heroPosition, places);
     var bestRoute = null;
     for(var i = 0; i < sortedPlaces.length && (!bestRoute || i < 2); i++) {
@@ -17,4 +17,4 @@ function nearestDirection(heroPosition, map, places) {
     return bestRoute;
 }
 
-module.exports = nearestDirection;
+export = nearestDirection;

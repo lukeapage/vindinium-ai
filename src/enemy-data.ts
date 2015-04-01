@@ -1,17 +1,21 @@
-var common = require("./common");
+import common = require("./common");
+import MapData = require("./map-data");
 
-function getEnemyData(mapData, heroes) {
+interface EnemyData {
+}
+
+function getEnemyData(mapData : MapData, heroes : VHero[]) : EnemyData {
     var enemiesWithGoldMines = Object.keys(mapData.enemyGoldMines),
         enemiesMapped = {};
 
     var sortedByGoldMine = enemiesWithGoldMines.sort(function(a, b) {
-        a = mapData.enemyGoldMines[a];
-        b = mapData.enemyGoldMines[b];
+        var enemyGoldMineA = mapData.enemyGoldMines[a];
+        var enemyGoldMineB = mapData.enemyGoldMines[b];
 
-        if (a.count < b.count) {
+        if (enemyGoldMineA.count < enemyGoldMineB.count) {
             return -1;
         }
-        if (a.count > b.count) {
+        if (enemyGoldMineA.count > enemyGoldMineB.count) {
             return 1;
         }
         return 0;
@@ -38,4 +42,4 @@ function getEnemyData(mapData, heroes) {
     return {sortedByGoldMine: sortedByGoldMine, mapped: enemiesMapped};
 }
 
-module.exports = getEnemyData;
+export = getEnemyData;

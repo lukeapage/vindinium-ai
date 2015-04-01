@@ -1,6 +1,7 @@
-var legend = require("./legend");
+import legend = require("./legend");
+import MapData = require("./map-data");
 
-function parseMap(board, heroid) {
+function parseMap(board : VBoard, heroid : string) : MapData {
 
     var size = board.size;
     var tiles = board.tiles;
@@ -37,4 +38,4 @@ function parseMap(board, heroid) {
     return { map: map, taverns: taverns, freeGoldMines: freeGoldMines, enemyGoldMines: enemyGoldMines, enemies: enemies };
 }
 
-module.exports = parseMap;
+export = parseMap;

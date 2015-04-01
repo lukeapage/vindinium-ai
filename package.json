@@ -1,10 +1,10 @@
 {
   "name": "virdinium-ai",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "Virdinium Ai",
   "main": "index.js",
   "scripts": {
-    "test": "node src/bot.js -t 1 --map m1 config.json"
+    "test": "node lib/bot.js -t 1 --map m1 config.json"
   },
   "repository": {
     "type": "git",
@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/lukeapage/virdinium-ai",
   "dependencies": {
+    "grunt-ts": "^4.0.1",
     "vindinium-client": "^2.0.1"
   },
   "devDependencies": {

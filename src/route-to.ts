@@ -1,4 +1,4 @@
-var common = require("./common");
+import common = require("./common");
 
 function scorePosition(oldRoute) {
     return oldRoute ? oldRoute.score + 1 : 1;
@@ -49,7 +49,7 @@ function routeSorter(a, b) {
     return 0;
 }
 
-function routeTo(positionFrom, positionTo, map, routeScorer) {
+function routeTo(positionFrom : VPosition, positionTo : VPosition, map : string[][], routeScorer?) {
     var routes = [];
 
     common.allDirections(testDirection.bind(null, positionFrom, positionTo, map, null, routes));
@@ -87,4 +87,4 @@ function routeTo(positionFrom, positionTo, map, routeScorer) {
     return fastestRoute;
 }
 
-module.exports = routeTo;
+export = routeTo;

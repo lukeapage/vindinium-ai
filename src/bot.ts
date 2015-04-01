@@ -1,13 +1,15 @@
-var common = require("./common");
-var parseMap = require("./map");
+/// <reference path='../typings/node/node.d.ts' />
+/// <reference path='../typings/vindinium/vindinium.d.ts' />
 
-var getRandomMove = require("./random-move");
-var getEnemyData = require("./enemy-data");
-var strategyKillEnemy = require("./strategy-kill-enemy");
-var strategyHeal = require("./strategy-heal");
-var strategyGetGoldMine = require("./strategy-get-gold-mine");
+import parseMap = require("./map");
+import routeTo = require("./route-to");
+import getEnemyData = require("./enemy-data");
+import strategyKillEnemy = require("./strategy-kill-enemy");
+import strategyHeal = require("./strategy-heal");
+import strategyGetGoldMine = require("./strategy-get-gold-mine");
+import getRandomMove = require("./random-move");
 
-function bot(state, callback) {
+function bot(state: VState, callback) : void {
 
     var mapData = parseMap(state.game.board, state.hero.id),
         map = mapData.map,
@@ -32,12 +34,13 @@ function bot(state, callback) {
         return;
     }
 
-    dir = getRandomMove(map, heroPosition);
+    var dir = getRandomMove(map, heroPosition);
 
     callback(null, dir);
-};
+}
 
-module.exports = bot;
+export = bot;
+
 if (require.main === module) {
 	require('vindinium-client').cli(bot);
 }
