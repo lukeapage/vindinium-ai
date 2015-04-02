@@ -1,12 +1,25 @@
 import common = require("./common");
-import MapData = require("./map-data");
+import map = require("./map");
 
-interface EnemyData {
+export interface Enemy {
+    id: string;
+    goldMines: map.EnemyGoldMineData;
+    position: VPosition;
+    enemyStats: VHero
 }
 
-function getEnemyData(mapData : MapData, heroes : VHero[]) : EnemyData {
+export interface EnemyData {
+    sortedByGoldMine: Enemy[];
+    mapped: MappedEnemies;
+}
+
+export interface MappedEnemies {
+    [enemyId: string]: Enemy;
+}
+
+export function parseEnemyData(mapData : map.MapData, heroes : VHero[]) : EnemyData {
     var enemiesWithGoldMines = Object.keys(mapData.enemyGoldMines),
-        enemiesMapped = {};
+        enemiesMapped : MappedEnemies = {};
 
     var sortedByGoldMine = enemiesWithGoldMines.sort(function(a, b) {
         var enemyGoldMineA = mapData.enemyGoldMines[a];
@@ -29,17 +42,16 @@ function getEnemyData(mapData : MapData, heroes : VHero[]) : EnemyData {
             console.warn("Couldn't find stats for " + enemyId);
             console.dir(heroes);
         }
-        var enemyData = {
+        var enemy : Enemy = {
             id: enemyId,
             goldMines: mapData.enemyGoldMines[enemyId],
             position: mapData.enemies[enemyId],
             enemyStats: enemyStats
         };
-        enemiesMapped[enemyId] = enemyData;
-        return enemyData;
+        enemiesMapped[enemyId] = enemy;
+        return enemy;
     });
 
     return {sortedByGoldMine: sortedByGoldMine, mapped: enemiesMapped};
 }
 
-export = getEnemyData;

@@ -1,9 +1,10 @@
 /// <reference path='../typings/node/node.d.ts' />
 /// <reference path='../typings/vindinium/vindinium.d.ts' />
 
-import parseMap = require("./map");
+import map = require("./map");
 import routeTo = require("./route-to");
-import getEnemyData = require("./enemy-data");
+import enemyData = require("./enemy-data");
+import strategyType = require("./strategy-type");
 import strategyKillEnemy = require("./strategy-kill-enemy");
 import strategyHeal = require("./strategy-heal");
 import strategyGetGoldMine = require("./strategy-get-gold-mine");
@@ -11,15 +12,14 @@ import getRandomMove = require("./random-move");
 
 function bot(state: VState, callback) : void {
 
-    var mapData = parseMap(state.game.board, state.hero.id),
-        map = mapData.map,
-        heroPosition = {x: state.hero.pos.y, y: state.hero.pos.x};
+    var mapData : map.MapData = map.parseMap(state.game.board, state.hero.id),
+        heroPosition : VPosition = {x: state.hero.pos.y, y: state.hero.pos.x};
 
-    var enemyData = getEnemyData(mapData, state.game.heroes);
+    var parsedEnemyData : enemyData.EnemyData = enemyData.parseEnemyData(mapData, state.game.heroes);
 
-    var possibilities = strategyKillEnemy(mapData, enemyData, heroPosition, state).concat(
-        strategyHeal(mapData, enemyData, heroPosition, state),
-        strategyGetGoldMine(mapData, enemyData, heroPosition, state)
+    var possibilities : strategyType.StrategyResult[] = strategyKillEnemy(mapData, parsedEnemyData, heroPosition, state).concat(
+        strategyHeal(mapData, parsedEnemyData, heroPosition, state),
+        strategyGetGoldMine(mapData, parsedEnemyData, heroPosition, state)
         ).sort(function(a, b) {
             if (a.score < b.score) {
                 return 1;
@@ -34,7 +34,7 @@ function bot(state: VState, callback) : void {
         return;
     }
 
-    var dir = getRandomMove(map, heroPosition);
+    var dir = getRandomMove(mapData.map, heroPosition);
 
     callback(null, dir);
 }

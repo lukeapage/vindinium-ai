@@ -1,8 +1,10 @@
 import common = require("./common");
 import routeTo = require("./route-to");
-import MapData = require("./map-data");
+import map = require("./map");
+import enemyData = require("./enemy-data");
+import strategyType = require("./strategy-type");
 
-function strategyKillEnemy(mapData : MapData, enemyData : EnemyData, heroPosition : VPosition, state : VState) {
+function strategyKillEnemy(mapData : map.MapData, enemyData : enemyData.EnemyData, heroPosition : VPosition, state : VState): strategyType.StrategyResult[] {
     if (enemyData.sortedByGoldMine.length > 0 && enemyData.sortedByGoldMine[0].goldMines.count > 1 &&
         enemyData.sortedByGoldMine[0].enemyStats.life < state.hero.life) {
         var enemyPosition = enemyData.sortedByGoldMine[0].position;

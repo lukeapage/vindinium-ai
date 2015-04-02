@@ -1,15 +1,36 @@
 import legend = require("./legend");
-import MapData = require("./map-data");
+import map = require("./map");
 
-function parseMap(board : VBoard, heroid : string) : MapData {
+export interface MapData {
+    map: string[][];
+    taverns: VPosition[];
+    freeGoldMines: VPosition[];
+    enemyGoldMines: EnemyGoldMineDataMap;
+    enemies: EnemyPositionMap;
+}
+
+export interface EnemyGoldMineData {
+    count: number;
+    positions: VPosition[];
+}
+
+export interface EnemyGoldMineDataMap {
+    [enemy: string]: EnemyGoldMineData;
+}
+
+export interface EnemyPositionMap {
+    [enemy: string]: VPosition;
+}
+
+export function parseMap(board : VBoard, heroid : string) : MapData {
 
     var size = board.size;
     var tiles = board.tiles;
-    var map = [];
-    var taverns = [];
-    var freeGoldMines = [];
-    var enemyGoldMines = {};
-    var enemies = {};
+    var map : string[][] = [];
+    var taverns : VPosition[] = [];
+    var freeGoldMines : VPosition[] = [];
+    var enemyGoldMines : EnemyGoldMineDataMap = {};
+    var enemies : EnemyPositionMap = {};
     var i = 0;
     for(var y = 0; y < size; y++) {
         var row = [];
@@ -37,5 +58,3 @@ function parseMap(board : VBoard, heroid : string) : MapData {
     }
     return { map: map, taverns: taverns, freeGoldMines: freeGoldMines, enemyGoldMines: enemyGoldMines, enemies: enemies };
 }
-
-export = parseMap;
