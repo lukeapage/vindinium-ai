@@ -2,6 +2,6 @@ module.exports = {
     files: 'lib/*.js',
     options: {
         lazy: false,
-        basePath: ''
+        basePath: 'test/coverage/'
     }
 };

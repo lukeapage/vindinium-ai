@@ -1,6 +1,6 @@
 import legend = require("./legend");
 
-export function dimensionDistance(x1, x2) {
+export function dimensionDistance(x1 : number, x2 : number) : number {
     var distance = x1 - x2;
     if (distance < 0) {
         distance *= -1;
@@ -8,11 +8,16 @@ export function dimensionDistance(x1, x2) {
     return distance;
 }
 
-export function distance(p1, p2) {
+export function distance(p1 : VPosition, p2 : VPosition) : number {
     return dimensionDistance(p1.x, p2.x) + dimensionDistance(p1.y, p2.y);
 }
 
-export function sortPositionsByCrowDistance(p1, list) {
+export interface DistancePositionInfo {
+    distance: number;
+    position: VPosition;
+};
+
+export function sortPositionsByCrowDistance(p1 : VPosition, list : VPosition[]) : DistancePositionInfo[] {
     var x = p1.x;
     var y = p1.y;
     return list.map(function(position) {
@@ -27,7 +32,7 @@ export function sortPositionsByCrowDistance(p1, list) {
     });
 }
 
-export function canMoveToTile(map, x, y, taverns ?: boolean, goldMines ?: boolean) {
+export function canMoveToTile(map : string[][], x : number, y : number, taverns ?: boolean, goldMines ?: boolean) : boolean {
     if (x < 0 || x >= map[0].length) {
         return false;
     }
@@ -49,7 +54,7 @@ export function canMoveToTile(map, x, y, taverns ?: boolean, goldMines ?: boolea
     return true;
 }
 
-export function allDirections(func) {
+export function allDirections(func) : void {
     func( 0, -1, "n");
     func( 0,  1, "s");
     func( 1,  0, "e");

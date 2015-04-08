@@ -1,5 +1,5 @@
 var expect = require('chai').expect;
-var map = require("../lib/map");
+var map = require("./coverage/lib/map");
 
 describe('Map parse', function(){
     it('should parse okay', function(){

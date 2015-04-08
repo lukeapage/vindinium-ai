@@ -1,5 +1,5 @@
 var expect = require('chai').expect;
-var common = require("../lib/common");
+var common = require("./coverage/lib/common");
 var variedMap = require("./test-map-varied");
 
 describe('common', function(){
