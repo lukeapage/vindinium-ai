@@ -34,10 +34,10 @@ function testDirection(positionFrom, positionTo, map, oldRoute, routes, movement
 }
 
 function routeSorter(a, b) {
-    if (a.distance > b.distance) {
+    if (a.score > b.score) {
         return 1;
     }
-    if (a.distance < b.distance) {
+    if (a.score < b.score) {
         return -1;
     }
     if (a.moves < b.moves) {

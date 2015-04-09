@@ -2,9 +2,9 @@ var expect = require('chai').expect;
 var common = require("./coverage/lib/common");
 var variedMap = require("./test-map-varied");
 
-describe('common', function(){
+describe('common', function() {
     describe("distance", function() {
-        it('should work', function(){
+        it('should work', function() {
             expect(common.distance({x: 0, y: 0}, {x: 0, y: 0})).to.equal(0);
             expect(common.distance({x: 0, y: 0}, {x: 1, y: 1})).to.equal(2);
             expect(common.distance({x: 1, y: 1}, {x: 0, y: 0})).to.equal(2);
