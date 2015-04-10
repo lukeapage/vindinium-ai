@@ -1,5 +1,4 @@
 import map = require("./map");
-import routeTo = require("./route-to");
 import enemyData = require("./enemy-data");
 
 export interface Places {
@@ -13,11 +12,11 @@ export interface TurnState {
     places: Places;
     hero: VHero;
     enemies: enemyData.MappedEnemies;
+    enemyList: enemyData.Enemy[];
     stats: Stats;
 };
 
 export interface Stats {
-    enemiesSortedByGoldMine: enemyData.Enemy[]
 };
 
 export function parse(state : VState) : TurnState {
@@ -47,16 +46,8 @@ export function parse(state : VState) : TurnState {
             lastDir: state.hero.lastDir
         },
         enemies: parsedEnemyData.mapped,
+        enemyList: parsedEnemyData.list,
         stats: {
-            enemiesSortedByGoldMine: parsedEnemyData.list.sort(function(enemyA, enemyB) {
-                if (enemyA.goldMines.count < enemyB.goldMines.count) {
-                    return -1;
-                }
-                if (enemyA.goldMines.count > enemyB.goldMines.count) {
-                    return 1;
-                }
-                return 0;
-            })
         }
     };
 }

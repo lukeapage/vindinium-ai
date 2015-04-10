@@ -32,8 +32,10 @@ function strategyRunner(
             diffTime = endTime - startTime;
 
         if (diffTime > 50) {
-            console.log("Over 50ms response time");
-            console.dir(turnState);
+            console.log();
+            console.log("Over 50ms response time - " + diffTime + "ms");
+            console.log(JSON.stringify(state, null, 2));
+            console.log();
         }
 
         if (possibilities.length) {
