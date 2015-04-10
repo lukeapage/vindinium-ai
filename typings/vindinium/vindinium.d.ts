@@ -16,7 +16,7 @@ interface VGame {
 }
 
 interface VHero {
-    id: string;
+    id: number;
     name: string;
     userId: string;
     elo: number;

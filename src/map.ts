@@ -22,7 +22,7 @@ export interface EnemyPositionMap {
     [enemy: string]: VPosition;
 }
 
-export function parseMap(board : VBoard, heroid : string) : MapData {
+export function parseMap(board : VBoard, heroid : number) : MapData {
 
     var size = board.size;
     var tiles = board.tiles;

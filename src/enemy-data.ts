@@ -2,7 +2,7 @@ import common = require("./common");
 import map = require("./map");
 
 export interface Enemy {
-    id: string;
+    id: number;
     goldMines: map.EnemyGoldMineData;
     position: VPosition;
     enemyStats: VHero
@@ -17,10 +17,17 @@ export interface MappedEnemies {
     [enemyId: string]: Enemy;
 }
 
-export function parseEnemyData(mapData : map.MapData, heroes : VHero[]) : EnemyData {
+export function parseEnemyData(heroId : number, mapData : map.MapData, heroes : VHero[]) : EnemyData {
     var enemiesMapped : MappedEnemies = {};
 
-    var enemyList = heroes.map(function(hero) {
+    var enemyList = heroes
+        .filter(function(hero) {
+            if (String(hero.id) === String(heroId)) {
+                return false;
+            }
+            return true;
+        })
+        .map(function(hero) {
         var enemyId = hero.id;
 
         var enemy : Enemy = {

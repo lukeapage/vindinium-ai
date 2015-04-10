@@ -24,7 +24,7 @@ export function parse(state : VState) : TurnState {
     var mapData : map.MapData = map.parseMap(state.game.board, state.hero.id),
         heroPosition : VPosition = {x: state.hero.pos.y, y: state.hero.pos.x};
 
-    var parsedEnemyData = enemyData.parseEnemyData(mapData, state.game.heroes);
+    var parsedEnemyData = enemyData.parseEnemyData(state.hero.id, mapData, state.game.heroes);
 
     return {
         map: mapData.map,

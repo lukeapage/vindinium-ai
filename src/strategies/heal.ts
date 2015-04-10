@@ -1,7 +1,7 @@
-import common = require("./common");
-import nearestDirection = require("./nearest-direction");
-import strategyType = require("./strategy-type");
-import TurnState = require("./turn-state");
+import common = require("../common");
+import nearestDirection = require("../nearest-direction");
+import strategyType = require("../strategy-type");
+import TurnState = require("../turn-state");
 
 function strategyHeal(turnState : TurnState.TurnState): strategyType.StrategyResult[] {
     var route = nearestDirection(turnState.hero.pos, turnState.map, turnState.places.taverns);

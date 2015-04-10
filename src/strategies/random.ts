@@ -1,6 +1,6 @@
-import common = require("./common");
-import strategyType = require("./strategy-type");
-import TurnState = require("./turn-state");
+import common = require("../common");
+import strategyType = require("../strategy-type");
+import TurnState = require("../turn-state");
 
 function strategyRandom(turnState : TurnState.TurnState): strategyType.StrategyResult[] {
 

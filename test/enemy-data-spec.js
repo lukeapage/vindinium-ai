@@ -3,7 +3,7 @@ var enemyData = require("./coverage/lib/enemy-data");
 
 describe('enemy data', function() {
     it("should work", function() {
-        var parsedData = enemyData.parseEnemyData({
+        var parsedData = enemyData.parseEnemyData("3", {
                 enemyGoldMines: {
                     "1": {
                         count: 1,
@@ -45,12 +45,6 @@ describe('enemy data', function() {
                 position: { x: 3, y: 3},
                 enemyStats: { id: "2" }
             },
-            enemy3 = {
-                id: "3",
-                goldMines: { count: 0, positions: [] },
-                position: { x: 4, y: 4},
-                enemyStats: { id: "3" }
-            },
             enemy4 = {
                 id: "4",
                 goldMines: { count: 0, positions: [] },
@@ -60,11 +54,10 @@ describe('enemy data', function() {
 
         expect(parsedData).to.deep.equal(
             {
-                list: [enemy1, enemy2, enemy3, enemy4],
+                list: [enemy1, enemy2, enemy4],
                 mapped: {
                     "1": enemy1,
                     "2": enemy2,
-                    "3": enemy3,
                     "4": enemy4
                 }
             }

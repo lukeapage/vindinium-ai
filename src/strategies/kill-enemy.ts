@@ -1,7 +1,7 @@
-import common = require("./common");
-import routeTo = require("./route-to");
-import strategyType = require("./strategy-type");
-import TurnState = require("./turn-state");
+import common = require("../common");
+import routeTo = require("../route-to");
+import strategyType = require("../strategy-type");
+import TurnState = require("../turn-state");
 
 function strategyKillEnemy(turnState : TurnState.TurnState): strategyType.StrategyResult[] {
     var sortedByGoldMine = turnState.stats.enemiesSortedByGoldMine

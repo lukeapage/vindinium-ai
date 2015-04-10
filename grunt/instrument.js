@@ -1,5 +1,5 @@
 module.exports = {
-    files: 'lib/*.js',
+    files: 'lib/**/*.js',
     options: {
         lazy: false,
         basePath: 'test/coverage/'
