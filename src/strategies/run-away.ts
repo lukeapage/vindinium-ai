@@ -14,7 +14,7 @@ function strategyRunAway(state : turnState.TurnState): strategyType.StrategyResu
 
     for(var i = 0; i < state.enemyList.length; i++) {
         var enemy = state.enemyList[i];
-        if (enemy.enemyStats.life > state.hero.life) {
+        if (enemy.life > state.hero.life) {
 
             var routeToEnemy = state.routeTo(state.hero.pos, enemy.position);
 

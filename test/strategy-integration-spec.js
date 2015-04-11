@@ -15,7 +15,7 @@ describe('strategy', function() {
         var finalDir;
         strategyRunner(testState1, function(err, dir) {finalDir = dir}, strategyKillEnemy, strategyHeal, strategyGetGoldMine, strategyRunAway);
 
-        expect(finalDir).to.equal("e");
+        expect(finalDir).to.equal("n");
     });
     it("works for test case 2", function() {
         var finalDir;

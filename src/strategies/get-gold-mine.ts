@@ -9,10 +9,11 @@ function strategyGetGoldMine(state : turnState.TurnState) : strategyType.Strateg
     //     prioritise free goldmines vs enemy goldmines
 
     var route = state.nearestDirection(state.hero.pos, state.places.freeGoldMines);
-    if (route) {
-        var canSurvive = state.hero.life - (20 + route.moves);
+    var canSurvive = state.hero.life - (20 + route.moves) > 0;
 
-        return [{score: canSurvive > 0 ? 50 : 0, dir: route.initialDir}];
+    if (route && canSurvive) {
+        var closeness = Math.max(100, ((6 * 1/*enemy.goldMines.count*/) - route.moves) * 20) / 2;
+        return [{score: 50 + closeness, dir: route.initialDir}];
     }
     return [];
 }

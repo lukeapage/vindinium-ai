@@ -5,7 +5,9 @@ export interface Enemy {
     id: number;
     goldMines: map.EnemyGoldMineData;
     position: VPosition;
-    enemyStats: VHero
+    spawnPos: VPosition;
+    crashed: boolean;
+    life: number;
 }
 
 export interface EnemyData {
@@ -39,7 +41,9 @@ export function parseEnemyData(heroId : number, mapData : map.MapData, heroes : 
                 id: enemyId,
                 goldMines: mapData.enemyGoldMines[enemyId] || { count: 0, positions: [] },
                 position: enemyPosition,
-                enemyStats: hero
+                spawnPos: {x: hero.spawnPos.y, y: hero.spawnPos.x},
+                life: hero.life,
+                crashed: hero.crashed
             };
             enemiesMapped[enemyId] = enemy;
             return enemy;

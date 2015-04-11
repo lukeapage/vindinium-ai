@@ -25,10 +25,10 @@ describe('enemy data', function() {
                     }
                 }
             }, [
-                { id: "1" },
-                { id: "2" },
-                { id: "3" },
-                { id: "4" }
+                { id: "1", spawnPos: { x: 2, y: 1}, crashed: false, life: 99 },
+                { id: "2", spawnPos: { x: 3, y: 2}, crashed: false, life: 98 },
+                { id: "3", spawnPos: { x: 4, y: 3}, crashed: false, life: 97 },
+                { id: "4", spawnPos: { x: 5, y: 4}, crashed: true, life: 96 }
             ]);
 
         var enemy1 = {
@@ -37,19 +37,25 @@ describe('enemy data', function() {
                     {x: 1, y: 1}
                 ] },
                 position: { x: 2, y: 2},
-                enemyStats: { id: "1" }
+                crashed: false,
+                life: 99,
+                spawnPos: { x: 1, y: 2 }
             },
             enemy2 = {
                 id: "2",
                 goldMines: { count: 0, positions: [] },
                 position: { x: 3, y: 3},
-                enemyStats: { id: "2" }
+                crashed: false,
+                life: 98,
+                spawnPos: { x: 2, y: 3 }
             },
             enemy4 = {
                 id: "4",
                 goldMines: { count: 0, positions: [] },
                 position: { x: 5, y: 5},
-                enemyStats: { id: "4" }
+                crashed: true,
+                life: 96,
+                spawnPos: { x: 4, y: 5 }
             };
 
         expect(parsedData).to.deep.equal(
