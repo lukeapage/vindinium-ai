@@ -20,7 +20,7 @@ function strategyKillEnemy(state : turnState.TurnState): strategyType.StrategyRe
             var movesToTavern = routeToTavern ? routeToTavern.moves : Infinity;
             var enemyMovesToTavern = enemyRouteToTavern ? enemyRouteToTavern.moves : Infinity;
 
-            var closeness = (6 - routeToEnemy.moves) * 20;
+            var closeness = Math.max(100, ((6 * enemy.goldMines.count) - routeToEnemy.moves) * 20);
             var weAreCloserToTavern = movesToTavern <= enemyMovesToTavern ? 100 : enemy.enemyStats.crashed ? 100 : 0;
 
             return [{score: (closeness + weAreCloserToTavern) / 2, dir: routeToEnemy.initialDir}];

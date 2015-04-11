@@ -26,6 +26,11 @@ export function parseMap(board : VBoard, heroid : number) : MapData {
 
     var size = board.size;
     var tiles = board.tiles;
+
+    if (!size) {
+        throw new Error("Board has no size??!");
+    }
+
     var map : string[][] = [];
     var taverns : VPosition[] = [];
     var freeGoldMines : VPosition[] = [];

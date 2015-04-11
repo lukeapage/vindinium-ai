@@ -70,6 +70,13 @@ function routeSorter(a, b) {
 
 export function to(cache: Object, map : string[][], positionFrom : VPosition, positionTo : VPosition, routeScorer?) : Route {
 
+    if (!positionFrom) {
+        throw new Error("no position from");
+    }
+    if (!positionTo) {
+        throw new Error("no position to");
+    }
+
     var cacheKeyFrom = positionFrom.x + "_" + positionFrom.y;
     var cacheKey = cacheKeyFrom + "-" + positionTo.x + "_" + positionTo.y;
     if (cache[cacheKey]) {

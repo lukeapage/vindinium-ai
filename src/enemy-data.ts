@@ -28,17 +28,22 @@ export function parseEnemyData(heroId : number, mapData : map.MapData, heroes : 
             return true;
         })
         .map(function(hero) {
-        var enemyId = hero.id;
+            var enemyId = hero.id;
+            var enemyPosition = mapData.enemies[enemyId];
 
-        var enemy : Enemy = {
-            id: enemyId,
-            goldMines: mapData.enemyGoldMines[enemyId] || { count: 0, positions: [] },
-            position: mapData.enemies[enemyId],
-            enemyStats: hero
-        };
-        enemiesMapped[enemyId] = enemy;
-        return enemy;
-    });
+            if (!enemyPosition) {
+                throw new Error("Enemy " + enemyId + " is not on the map!");
+            }
+
+            var enemy : Enemy = {
+                id: enemyId,
+                goldMines: mapData.enemyGoldMines[enemyId] || { count: 0, positions: [] },
+                position: enemyPosition,
+                enemyStats: hero
+            };
+            enemiesMapped[enemyId] = enemy;
+            return enemy;
+        });
 
     return {list: enemyList, mapped: enemiesMapped};
 }
