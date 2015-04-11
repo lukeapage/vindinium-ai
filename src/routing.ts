@@ -18,32 +18,28 @@ export interface Route {
     score: number;
 }
 
-function testDirection(map : string[][], previousMoves, oldRoute : Route, routes : Route[], movementX : number, movementY : number, direction : string) {
+function testDirection(map : string[][], previousMoves : Object, oldRoute : Route, routes : Route[], movementX : number, movementY : number, direction : string) {
 
     var positionFrom = oldRoute.positionFrom;
     var positionTo = oldRoute.positionTo;
     var newPosition = {x: oldRoute.currentPosition.x + movementX, y: oldRoute.currentPosition.y + movementY};
     if (common.canMoveToTile(map, newPosition.x, newPosition.y) || (newPosition.y === positionTo.y && newPosition.x === positionTo.x)) {
 
-        var moves = (oldRoute ? oldRoute.moves : 0) + 1;
-        var positionFound = false;
-        if (oldRoute) {
-            if (common.find(previousMoves, function(previousPosition) {
-                    if (previousPosition.pos.x === newPosition.x && previousPosition.pos.y === newPosition.y) {
-                        if (previousPosition.moves <= moves) {
-                            return true;
-                        } else {
-                            previousPosition.moves = moves;
-                            positionFound = true;
-                        }
-                    }
-                })) {
+        var moves = oldRoute.moves + 1;
+
+        var cacheKeyNewPosition = newPosition.x + "_" + newPosition.y;
+        var previousMoveToSamePosition = previousMoves[cacheKeyNewPosition];
+
+        if (previousMoveToSamePosition) {
+            if (previousMoveToSamePosition.moves <= moves) {
                 return;
+            } else {
+                previousMoveToSamePosition.moves = moves;
             }
+        } else {
+            previousMoves[cacheKeyNewPosition] = {pos: newPosition, moves: moves};
         }
-        if (!positionFound) {
-            previousMoves.push({pos: newPosition, moves: moves});
-        }
+
         routes.push({
             initialDir: oldRoute.initialDir || direction,
             currentPosition: newPosition,
@@ -73,8 +69,17 @@ function routeSorter(a, b) {
 }
 
 export function to(cache: Object, map : string[][], positionFrom : VPosition, positionTo : VPosition, routeScorer?) : Route {
+
+    var cacheKeyFrom = positionFrom.x + "_" + positionFrom.y;
+    var cacheKey = cacheKeyFrom + "-" + positionTo.x + "_" + positionTo.y;
+    if (cache[cacheKey]) {
+        return cache[cacheKey];
+    }
+
     var routes = [];
-    var previousMoves = [ { pos: positionFrom, moves: 0 } ];
+    var previousMoves = {};
+    previousMoves[cacheKeyFrom] = {pos: positionFrom, moves: 0};
+
     var startRoute : Route = {
         positionFrom: positionFrom,
         currentPosition: positionFrom,
@@ -116,6 +121,8 @@ export function to(cache: Object, map : string[][], positionFrom : VPosition, po
         newRoutes.sort(routeSorter);
         routes = newRoutes;
     }
+
+    cache[cacheKey] = fastestRoute;
 
     return fastestRoute;
 }
