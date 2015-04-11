@@ -54,11 +54,14 @@ export function canMoveToTile(map : string[][], x : number, y : number, taverns 
     return true;
 }
 
-export function allDirections(func) : void {
+export function allDirections(func : ( x: number, y: number, dir: string) => void, includeStay? : boolean) : void {
     func( 0, -1, "n");
     func( 0,  1, "s");
     func( 1,  0, "e");
     func( -1,  0, "w");
+    if (includeStay) {
+        func( 0,  0, "");
+    }
 }
 
 export function find(list, predicate) {

@@ -4,11 +4,12 @@
 import strategyKillEnemy = require("../strategies/kill-enemy");
 import strategyHeal = require("../strategies/heal");
 import strategyGetGoldMine = require("../strategies/get-gold-mine");
+import strategyRunAway = require("../strategies/run-away");
 import strategyRunner = require("../strategy-runner");
 
 function bot(state: VState, callback) : void {
 
-    strategyRunner(state, callback, strategyKillEnemy, strategyHeal, strategyGetGoldMine);
+    strategyRunner(state, callback, strategyKillEnemy, strategyHeal, strategyGetGoldMine, strategyRunAway);
 }
 
 export = bot;

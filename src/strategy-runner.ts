@@ -1,19 +1,19 @@
 import strategyType = require("./strategy-type");
-import TurnState = require("./turn-state");
+import turnState = require("./turn-state");
 
 function strategyRunner(
-    state: VState,
+    gameState: VState,
     callback : (error: string, direction: string) => void,
-    ...strategies: ((turnState: TurnState.TurnState) => strategyType.StrategyResult[])[]) : void {
+    ...strategies: ((state: turnState.TurnState) => strategyType.StrategyResult[])[]) : void {
 
     var startTime = new Date().getTime();
 
     try {
-        var turnState = TurnState.parse(state);
+        var state = turnState.parse(gameState);
 
         var possibilities:strategyType.StrategyResult[] =
             strategies.reduce(function (resultList, strategy) {
-                var result = strategy(turnState);
+                var result = strategy(state);
                 if (!result || typeof result.length !== "number") {
                     console.log("Received bad result from strategy");
                 }
@@ -34,7 +34,7 @@ function strategyRunner(
         if (diffTime > 100) {
             console.log();
             console.log("Over 50ms response time - " + diffTime + "ms");
-            console.log(JSON.stringify(state, null, 2));
+            console.log(JSON.stringify(gameState, null, 2));
             console.log();
         }
 

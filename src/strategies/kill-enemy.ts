@@ -1,20 +1,20 @@
 import common = require("../common");
 import strategyType = require("../strategy-type");
-import TurnState = require("../turn-state");
+import turnState = require("../turn-state");
 
-function strategyKillEnemy(turnState : TurnState.TurnState): strategyType.StrategyResult[] {
-    for(var i = 0; i < turnState.enemyList.length; i++) {
-        var enemy = turnState.enemyList[i];
-        if (enemy.goldMines.count > 0 && enemy.enemyStats.life < turnState.hero.life) {
-            var routeToEnemy = turnState.routeTo(turnState.hero.pos, enemy.position);
+function strategyKillEnemy(state : turnState.TurnState): strategyType.StrategyResult[] {
+    for(var i = 0; i < state.enemyList.length; i++) {
+        var enemy = state.enemyList[i];
+        if (enemy.goldMines.count > 0 && enemy.enemyStats.life < state.hero.life) {
+            var routeToEnemy = state.routeTo(state.hero.pos, enemy.position);
 
             if (!routeToEnemy) { continue; }
 
-            var enemyRouteToTavern = turnState.nearestDirection(enemy.position, turnState.places.taverns);
+            var enemyRouteToTavern = state.nearestDirection(enemy.position, state.places.taverns);
             var routeToTavern;
 
             if (enemyRouteToTavern) {
-                routeToTavern = turnState.routeTo(turnState.hero.pos, enemyRouteToTavern.positionTo);
+                routeToTavern = state.routeTo(state.hero.pos, enemyRouteToTavern.positionTo);
             }
 
             var movesToTavern = routeToTavern ? routeToTavern.moves : Infinity;
