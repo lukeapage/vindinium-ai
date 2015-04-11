@@ -19,6 +19,7 @@ function strategyRunAway(state : turnState.TurnState): strategyType.StrategyResu
             var routeToEnemy = state.routeTo(state.hero.pos, enemy.position);
 
             if (!routeToEnemy || routeToEnemy.moves > 2) { continue; }
+            if (enemy.isTagTeam && routeToEnemy.moves === 2) { continue; } // ignore tag team member unless next to
 
             var forbiddenDirections = [];
             if (routeToEnemy.moves === 1) {

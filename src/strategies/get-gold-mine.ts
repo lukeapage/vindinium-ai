@@ -8,7 +8,15 @@ function strategyGetGoldMine(state : turnState.TurnState) : strategyType.Strateg
     //     prioritise goldmines next to taverns?
     //     prioritise free goldmines vs enemy goldmines
 
-    var route = state.nearestDirection(state.hero.pos, state.places.freeGoldMines);
+    var potentiolGoldMines = [].concat(state.places.freeGoldMines);
+
+    for(var i = 0; i < state.enemyList.length; i++) {
+        var enemy = state.enemyList[i];
+        if (enemy.isTagTeam) { continue; }
+        potentiolGoldMines = potentiolGoldMines.concat(enemy.goldMines.positions);
+    }
+
+    var route = state.nearestDirection(state.hero.pos, potentiolGoldMines);
     var canSurvive = state.hero.life - (20 + route.moves) > 0;
 
     if (route && canSurvive) {

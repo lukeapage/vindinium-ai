@@ -5,6 +5,11 @@ import turnState = require("../turn-state");
 function strategyKillEnemy(state : turnState.TurnState): strategyType.StrategyResult[] {
     for(var i = 0; i < state.enemyList.length; i++) {
         var enemy = state.enemyList[i];
+
+        if (enemy.isTagTeam) {
+            continue;
+        }
+
         if (enemy.goldMines.count > 0 && enemy.life < state.hero.life) {
             var routeToEnemy = state.routeTo(state.hero.pos, enemy.position);
 

@@ -46,8 +46,10 @@ export function parseMap(board : VBoard, heroid : number) : MapData {
             if (tile === legend.tavern) {
                 taverns.push(position);
             } else if (tile[0] === legend.goldMineStartsWith && tile[1] !== String(heroid)) {
-                freeGoldMines.push(position);
-                if (tile[1] !== "-") {
+
+                if (tile[1] === "-") {
+                    freeGoldMines.push(position);
+                } else {
                     if (!enemyGoldMines[tile[1]]) {
                         enemyGoldMines[tile[1]] = { count: 0, positions: [] };
                     }

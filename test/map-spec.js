@@ -12,7 +12,7 @@ describe('Map parse', function(){
     });
     it('should find free goldmines', function(){
         var mapData = map.parseMap({ size: 2, tiles: "$_$1$2$-"}, 1);
-        expect(mapData.freeGoldMines).to.deep.equal([{x: 0, y: 0}, {x: 0, y: 1}, {x: 1, y: 1}]);
+        expect(mapData.freeGoldMines).to.deep.equal([{x: 1, y: 1}]);
     });
     it('should find enemy goldmines', function(){
         var mapData = map.parseMap({ size: 3, tiles: "$-$1$2$-$3$1$4$4  "}, 1);
