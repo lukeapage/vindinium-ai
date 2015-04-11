@@ -72,7 +72,7 @@ function routeSorter(a, b) {
     return 0;
 }
 
-export function to(positionFrom : VPosition, positionTo : VPosition, map : string[][], routeScorer?) : Route {
+export function to(cache: Object, map : string[][], positionFrom : VPosition, positionTo : VPosition, routeScorer?) : Route {
     var routes = [];
     var previousMoves = [ { pos: positionFrom, moves: 0 } ];
     var startRoute : Route = {

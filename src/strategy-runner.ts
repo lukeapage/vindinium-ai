@@ -31,7 +31,7 @@ function strategyRunner(
         var endTime = new Date().getTime(),
             diffTime = endTime - startTime;
 
-        if (diffTime > 50) {
+        if (diffTime > 100) {
             console.log();
             console.log("Over 50ms response time - " + diffTime + "ms");
             console.log(JSON.stringify(state, null, 2));

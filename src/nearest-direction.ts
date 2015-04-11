@@ -1,11 +1,13 @@
 import common = require("./common");
 import routing = require("./routing");
 
-function nearestDirection(heroPosition : VPosition, map : string[][], places: VPosition[]) : routing.Route {
-    var sortedPlaces = common.sortPositionsByCrowDistance(heroPosition, places);
-    var bestRoute = null;
+function nearestDirection(routeTo : (positionFrom : VPosition, positionTo : VPosition, routeScorer?) => routing.Route,
+                          positionFrom : VPosition,
+                          positionsTo: VPosition[]) : routing.Route {
+    var sortedPlaces = common.sortPositionsByCrowDistance(positionFrom, positionsTo);
+    var bestRoute : routing.Route = null;
     for(var i = 0; i < sortedPlaces.length && (!bestRoute || i < 2); i++) {
-        var route = routing.to(heroPosition, sortedPlaces[i].position, map);
+        var route = routeTo(positionFrom, sortedPlaces[i].position);
         if (route) {
             if (!bestRoute) {
                 bestRoute = route;

@@ -1,22 +1,20 @@
 import common = require("../common");
-import routing = require("../routing");
 import strategyType = require("../strategy-type");
 import TurnState = require("../turn-state");
-import nearestDirection = require("../nearest-direction");
 
 function strategyKillEnemy(turnState : TurnState.TurnState): strategyType.StrategyResult[] {
     for(var i = 0; i < turnState.enemyList.length; i++) {
         var enemy = turnState.enemyList[i];
         if (enemy.goldMines.count > 0 && enemy.enemyStats.life < turnState.hero.life) {
-            var routeToEnemy = routing.to(turnState.hero.pos, enemy.position, turnState.map);
+            var routeToEnemy = turnState.routeTo(turnState.hero.pos, enemy.position);
 
             if (!routeToEnemy) { continue; }
 
-            var enemyRouteToTavern = nearestDirection(enemy.position, turnState.map, turnState.places.taverns);
+            var enemyRouteToTavern = turnState.nearestDirection(enemy.position, turnState.places.taverns);
             var routeToTavern;
 
             if (enemyRouteToTavern) {
-                routeToTavern = routing.to(turnState.hero.pos, enemyRouteToTavern.positionTo, turnState.map);
+                routeToTavern = turnState.routeTo(turnState.hero.pos, enemyRouteToTavern.positionTo);
             }
 
             var movesToTavern = routeToTavern ? routeToTavern.moves : Infinity;

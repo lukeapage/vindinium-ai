@@ -19,12 +19,12 @@ describe('strategy', function() {
         var finalDir;
         strategyRunner(testState2, function(err, dir) {finalDir = dir}, strategyKillEnemy, strategyHeal, strategyGetGoldMine);
 
-        expect(finalDir).to.equal("s");
+        expect(finalDir).to.equal("w");
     });
     it("works for test case 3", function() {
         var finalDir;
         strategyRunner(testState3, function(err, dir) {finalDir = dir}, strategyKillEnemy, strategyHeal, strategyGetGoldMine);
 
-        expect(finalDir).to.equal("s");
+        expect(finalDir).to.equal("n");
     });
 });

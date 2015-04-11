@@ -1,5 +1,7 @@
 import map = require("./map");
 import enemyData = require("./enemy-data");
+import routing = require("./routing");
+import nearestDirection = require("./nearest-direction");
 
 export interface Places {
     taverns: VPosition[];
@@ -14,6 +16,8 @@ export interface TurnState {
     enemies: enemyData.MappedEnemies;
     enemyList: enemyData.Enemy[];
     stats: Stats;
+    routeTo: (positionFrom : VPosition, positionTo : VPosition, routeScorer?) => routing.Route;
+    nearestDirection: (positionFrom : VPosition, positionsTo: VPosition[]) => routing.Route;
 };
 
 export interface Stats {
@@ -24,6 +28,7 @@ export function parse(state : VState) : TurnState {
         heroPosition : VPosition = {x: state.hero.pos.y, y: state.hero.pos.x};
 
     var parsedEnemyData = enemyData.parseEnemyData(state.hero.id, mapData, state.game.heroes);
+    var routeTo = routing.to.bind(null, {}, mapData.map);
 
     return {
         map: mapData.map,
@@ -48,7 +53,9 @@ export function parse(state : VState) : TurnState {
         enemies: parsedEnemyData.mapped,
         enemyList: parsedEnemyData.list,
         stats: {
-        }
+        },
+        routeTo: routeTo,
+        nearestDirection: nearestDirection.bind(null, routeTo)
     };
 }
 
