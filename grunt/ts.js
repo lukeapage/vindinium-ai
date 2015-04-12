@@ -5,7 +5,8 @@ module.exports = {
         options: {
             comments: true,
             module: "commonjs",
-            sourceMap: false
+            sourceMap: false,
+            noImplicitAny: true
         }
     }
 };

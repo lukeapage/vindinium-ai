@@ -1,6 +1,16 @@
 import strategyType = require("./strategy-type");
 import turnState = require("./turn-state");
 
+interface Direction {
+    dir: string;
+    highScore: number;
+    totalScore: number;
+}
+
+interface DirectionMap {
+    [dir: string] : Direction;
+}
+
 function strategyRunner(
     gameState: VState,
     callback : (error: string, direction: string) => void,
@@ -11,22 +21,42 @@ function strategyRunner(
     try {
         var state = turnState.parse(gameState);
 
-        var possibilities:strategyType.StrategyResult[] =
-            strategies.reduce(function (resultList, strategy) {
+        var directionMap : DirectionMap = {};
+        strategies.reduce(function (resultList, strategy) {
                 var result = strategy(state);
                 if (!result || typeof result.length !== "number") {
                     console.log("Received bad result from strategy");
                 }
                 return resultList.concat(result);
             }, [])
-                .sort(function (a, b) {
-                    if (a.score < b.score) {
-                        return 1;
-                    } else if (a.score > b.score) {
-                        return -1;
+            .forEach(function(strategy : strategyType.StrategyResult) {
+                if (!directionMap[strategy.dir]) {
+                    directionMap[strategy.dir] = { dir: strategy.dir, totalScore: strategy.score, highScore: strategy.score };
+                } else {
+                    var direction = directionMap[strategy.dir];
+                    direction.totalScore += strategy.score;
+                    if (strategy.score > direction.highScore) {
+                        direction.highScore = strategy.score;
                     }
-                    return 0;
-                });
+                }
+            });
+        var possibilities : Direction[] = Object.keys(directionMap)
+            .map(function(key) {
+                return directionMap[key];
+            })
+            .sort(function (a, b) {
+                if (a.highScore < b.highScore) {
+                    return 1;
+                } else if (a.highScore > b.highScore) {
+                    return -1;
+                }
+                if (a.totalScore < b.totalScore) {
+                    return 1;
+                } else if (a.totalScore > b.totalScore) {
+                    return -1;
+                }
+                return 0;
+            });
 
         var endTime = new Date().getTime(),
             diffTime = endTime - startTime;

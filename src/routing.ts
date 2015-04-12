@@ -1,13 +1,5 @@
 import common = require("./common");
 
-function scorePosition(oldRoute) {
-    return oldRoute ? oldRoute.score + 1 : 1;
-}
-
-function estimateRouteScore(route) {
-    return route.distance + route.score;
-}
-
 export interface Route {
     initialDir: string;
     positionFrom: VPosition;
@@ -18,7 +10,35 @@ export interface Route {
     score: number;
 }
 
-function testDirection(map : string[][], previousMoves : Object, oldRoute : Route, routes : Route[], movementX : number, movementY : number, direction : string) {
+interface RouteCache {
+    [cacheKey : string] : Route;
+}
+
+interface PreviousMove {
+    pos: VPosition;
+    moves: number;
+}
+
+interface PreviousMovesCache {
+    [cacheKey : string] : PreviousMove;
+}
+
+function scorePosition(oldRoute : Route) : number {
+    return oldRoute ? oldRoute.score + 1 : 1;
+}
+
+function estimateRouteScore(route : Route) : number {
+    return route.distance + route.score;
+}
+
+function testDirection(
+            map : string[][],
+            previousMoves : PreviousMovesCache,
+            oldRoute : Route,
+            routes : Route[],
+            movementX : number,
+            movementY : number,
+            direction : string) {
 
     var positionFrom = oldRoute.positionFrom;
     var positionTo = oldRoute.positionTo;
@@ -52,7 +72,7 @@ function testDirection(map : string[][], previousMoves : Object, oldRoute : Rout
     }
 }
 
-function routeSorter(a, b) {
+function routeSorter(a : Route, b : Route) : number {
     if (a.score > b.score) {
         return 1;
     }
@@ -68,7 +88,11 @@ function routeSorter(a, b) {
     return 0;
 }
 
-export function to(cache: Object, map : string[][], positionFrom : VPosition, positionTo : VPosition, routeScorer?) : Route {
+export function to(cache: RouteCache,
+                   map : string[][],
+                   positionFrom : VPosition,
+                   positionTo : VPosition,
+                   routeScorer? : () => number) : Route {
 
     if (!positionFrom) {
         throw new Error("no position from");
@@ -83,8 +107,8 @@ export function to(cache: Object, map : string[][], positionFrom : VPosition, po
         return cache[cacheKey];
     }
 
-    var routes = [];
-    var previousMoves = {};
+    var routes : Route[] = [];
+    var previousMoves : PreviousMovesCache = {};
     previousMoves[cacheKeyFrom] = {pos: positionFrom, moves: 0};
 
     var startRoute : Route = {
@@ -102,9 +126,9 @@ export function to(cache: Object, map : string[][], positionFrom : VPosition, po
 
     var bestScore = Infinity;
     //var totalDistance = common.distance(positionFrom, positionTo);
-    var fastestRoute;
+    var fastestRoute : Route;
     while(routes.length) {
-        var newRoutes = [],
+        var newRoutes : Route[] = [],
             topRoutesLength = Math.min(2, routes.length);
         for(var i = 0; i < topRoutesLength; i++) {
             var currentRoute = routes[i];

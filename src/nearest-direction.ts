@@ -1,7 +1,7 @@
 import common = require("./common");
 import routing = require("./routing");
 
-function nearestDirection(routeTo : (positionFrom : VPosition, positionTo : VPosition, routeScorer?) => routing.Route,
+function nearestDirection(routeTo : (positionFrom : VPosition, positionTo : VPosition, routeScorer? : () => number) => routing.Route,
                           positionFrom : VPosition,
                           positionsTo: VPosition[]) : routing.Route {
     var sortedPlaces = common.sortPositionsByCrowDistance(positionFrom, positionsTo);

@@ -1,6 +1,7 @@
 import common = require("../common");
 import strategyType = require("../strategy-type");
 import turnState = require("../turn-state");
+import routing = require("../routing");
 
 function strategyKillEnemy(state : turnState.TurnState): strategyType.StrategyResult[] {
     for(var i = 0; i < state.enemyList.length; i++) {
@@ -27,7 +28,7 @@ function strategyKillEnemy(state : turnState.TurnState): strategyType.StrategyRe
             }
 
             var enemyRouteToTavern = state.nearestDirection(enemy.position, state.places.taverns);
-            var routeToTavern;
+            var routeToTavern : routing.Route;
 
             if (enemyRouteToTavern) {
                 routeToTavern = state.routeTo(state.hero.pos, enemyRouteToTavern.positionTo);

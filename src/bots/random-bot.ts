@@ -4,7 +4,7 @@
 import strategyRandom = require("../strategies/random");
 import strategyRunner = require("../strategy-runner");
 
-function bot(state: VState, callback) : void {
+function bot(state: VState, callback : (error: string, direction: string) => void) : void {
 
     strategyRunner(state, callback, strategyRandom);
 }

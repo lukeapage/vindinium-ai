@@ -4,12 +4,11 @@ import turnState = require("../turn-state");
 
 function strategyRunAway(state : turnState.TurnState): strategyType.StrategyResult[] {
 
-    var returnStrategies = [];
+    var returnStrategies : strategyType.StrategyResult[] = [];
     if (state.hero.mineCount === 0) { return returnStrategies; }
 
     // TODO: or if we are closer to a free mine now than the start position (do with score?)
     // TODO: or multiple enemies, but with combined higher health
-
     // TODO: if a tavern is further away than re-spawning and re-capturing mine, then die!
 
     for(var i = 0; i < state.enemyList.length; i++) {
@@ -21,7 +20,7 @@ function strategyRunAway(state : turnState.TurnState): strategyType.StrategyResu
             if (!routeToEnemy || routeToEnemy.moves > 2) { continue; }
             if (enemy.isTagTeam && routeToEnemy.moves === 2) { continue; } // ignore tag team member unless next to
 
-            var forbiddenDirections = [];
+            var forbiddenDirections : string[] = [];
             if (routeToEnemy.moves === 1) {
                 forbiddenDirections.push(routeToEnemy.initialDir);
                 forbiddenDirections.push("");

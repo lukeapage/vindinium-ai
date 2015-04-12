@@ -16,7 +16,7 @@ export interface TurnState {
     enemies: enemyData.MappedEnemies;
     enemyList: enemyData.Enemy[];
     stats: Stats;
-    routeTo: (positionFrom : VPosition, positionTo : VPosition, routeScorer?) => routing.Route;
+    routeTo: (positionFrom : VPosition, positionTo : VPosition, routeScorer? : () => number) => routing.Route;
     nearestDirection: (positionFrom : VPosition, positionsTo: VPosition[]) => routing.Route;
 };
 

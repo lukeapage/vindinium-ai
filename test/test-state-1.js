@@ -16,9 +16,9 @@ module.exports = {
         },
         heroes: [
             { id: "1" },
-            { id: "2", life: 90 },
-            { id: "3", life: 90 },
-            { id: "4", life: 90 }
+            { id: "2", life: 90, spawnPos: { x: 7, y: 0 } },
+            { id: "3", life: 90, spawnPos: { x: 7, y: 7 } },
+            { id: "4", life: 90, spawnPos: { x: 0, y: 7 } }
         ]
     },
     hero: {

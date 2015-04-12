@@ -38,7 +38,7 @@ export function parseMap(board : VBoard, heroid : number) : MapData {
     var enemies : EnemyPositionMap = {};
     var i = 0;
     for(var y = 0; y < size; y++) {
-        var row = [];
+        var row : string[] = [];
         map.push(row);
         for(var x = 0; x < size; x++) {
             var tile = tiles.substr(i, 2);

@@ -17,11 +17,13 @@ function strategyGetGoldMine(state : turnState.TurnState) : strategyType.Strateg
     }
 
     var route = state.nearestDirection(state.hero.pos, potentiolGoldMines);
-    var canSurvive = state.hero.life - (20 + route.moves) > 0;
+    if (route) {
+        var canSurvive = state.hero.life - (20 + route.moves) > 0;
 
-    if (route && canSurvive) {
-        var closeness = Math.max(100, ((6 * 1/*enemy.goldMines.count*/) - route.moves) * 20) / 2;
-        return [{score: 50 + closeness, dir: route.initialDir}];
+        if (canSurvive) {
+            var closeness = Math.max(100, ((6 * 1/*enemy.goldMines.count*/) - route.moves) * 20) / 2;
+            return [{score: 50 + closeness, dir: route.initialDir}];
+        }
     }
     return [];
 }

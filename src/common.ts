@@ -64,8 +64,8 @@ export function allDirections(func : ( x: number, y: number, dir: string) => voi
     }
 }
 
-export function find(list, predicate) {
-    var value;
+export function find<T>(list : T[], predicate : (item : T, index? : number, list?: T[]) => boolean) : T {
+    var value : T;
 
     for (var i = 0; i < list.length; i++) {
         value = list[i];

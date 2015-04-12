@@ -7,7 +7,7 @@ import strategyGetGoldMine = require("../strategies/get-gold-mine");
 import strategyRunAway = require("../strategies/run-away");
 import strategyRunner = require("../strategy-runner");
 
-function bot(state: VState, callback) : void {
+function bot(state: VState, callback : (error: string, direction: string) => void) : void {
 
     strategyRunner(state, callback, strategyKillEnemy, strategyHeal, strategyGetGoldMine, strategyRunAway);
 }
