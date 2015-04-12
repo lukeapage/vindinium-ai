@@ -20,31 +20,31 @@ describe('common', function() {
     });
     describe("canMoveToTile", function () {
         it("should hande empty tiles", function() {
-            expect(common.canMoveToTile(variedMap, 0, 0, false, false)).to.equal(true);
-            expect(common.canMoveToTile(variedMap, 1, 0, false, false)).to.equal(true);
-            expect(common.canMoveToTile(variedMap, 0, 2, false, false)).to.equal(true);
+            expect(common.canMoveToTile(variedMap, 0, 0)).to.equal(true);
+            expect(common.canMoveToTile(variedMap, 1, 0)).to.equal(true);
+            expect(common.canMoveToTile(variedMap, 0, 2)).to.equal(true);
         });
         it("should handle out of map", function() {
-            expect(common.canMoveToTile(variedMap, -1, 0, false, false)).to.equal(false);
-            expect(common.canMoveToTile(variedMap, 0, -1, false, false)).to.equal(false);
-            expect(common.canMoveToTile(variedMap, 4, 0, false, false)).to.equal(false);
-            expect(common.canMoveToTile(variedMap, 0, 4, false, false)).to.equal(false);
+            expect(common.canMoveToTile(variedMap, -1, 0)).to.equal(false);
+            expect(common.canMoveToTile(variedMap, 0, -1)).to.equal(false);
+            expect(common.canMoveToTile(variedMap, 4, 0)).to.equal(false);
+            expect(common.canMoveToTile(variedMap, 0, 4)).to.equal(false);
         });
         it("should handle impassible woods", function() {
-            expect(common.canMoveToTile(variedMap, 2, 0, false, false)).to.equal(false);
+            expect(common.canMoveToTile(variedMap, 2, 0)).to.equal(false);
         });
         it("should handle taverns", function() {
-            expect(common.canMoveToTile(variedMap, 1, 2, false, false)).to.equal(false);
-            expect(common.canMoveToTile(variedMap, 1, 2, true, false)).to.equal(true);
+            expect(common.canMoveToTile(variedMap, 1, 2)).to.equal(false);
+            expect(common.canMoveToTile(variedMap, 1, 2, { taverns: true })).to.equal(true);
         });
         it("should handle heroes", function() {
-            expect(common.canMoveToTile(variedMap, 2, 1, false, false)).to.equal(false);
+            expect(common.canMoveToTile(variedMap, 2, 1)).to.equal(false);
         });
         it("should handle gold mines", function() {
-            expect(common.canMoveToTile(variedMap, 3, 0, false, false)).to.equal(false);
-            expect(common.canMoveToTile(variedMap, 2, 2, false, false)).to.equal(false);
-            expect(common.canMoveToTile(variedMap, 3, 0, false, true)).to.equal(true);
-            expect(common.canMoveToTile(variedMap, 2, 2, false, true)).to.equal(true);
+            expect(common.canMoveToTile(variedMap, 3, 0)).to.equal(false);
+            expect(common.canMoveToTile(variedMap, 2, 2)).to.equal(false);
+            expect(common.canMoveToTile(variedMap, 3, 0, { goldMines: true})).to.equal(true);
+            expect(common.canMoveToTile(variedMap, 2, 2, { goldMines: true})).to.equal(true);
         });
     });
 });

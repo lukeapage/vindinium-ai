@@ -36,6 +36,7 @@ function testDirection(
             previousMoves : IPreviousMovesCache,
             oldRoute : IRoute,
             routes : IRoute[],
+            options : common.ICanMoveToOptions,
             movementX : number,
             movementY : number,
             direction : string) : void {
@@ -43,7 +44,8 @@ function testDirection(
     var positionFrom = oldRoute.positionFrom;
     var positionTo = oldRoute.positionTo;
     var newPosition = {x: oldRoute.currentPosition.x + movementX, y: oldRoute.currentPosition.y + movementY};
-    if (common.canMoveToTile(map, newPosition.x, newPosition.y) || (newPosition.y === positionTo.y && newPosition.x === positionTo.x)) {
+    if (common.canMoveToTile(map, newPosition.x, newPosition.y, options) ||
+        (newPosition.y === positionTo.y && newPosition.x === positionTo.x)) {
 
         var moves = oldRoute.moves + 1;
 
@@ -92,6 +94,7 @@ export function to(cache : IRouteCache,
                    map : string[][],
                    positionFrom : VPosition,
                    positionTo : VPosition,
+                   options ? : common.ICanMoveToOptions,
                    routeScorer ? : () => number) : IRoute {
 
     if (!positionFrom) {
@@ -121,7 +124,7 @@ export function to(cache : IRouteCache,
         initialDir: null
     };
 
-    common.allDirections(testDirection.bind(null, map, previousMoves, startRoute, routes));
+    common.allDirections(testDirection.bind(null, map, previousMoves, startRoute, routes, options));
     routes.sort(routeSorter);
 
     var bestScore = Infinity;
@@ -141,7 +144,7 @@ export function to(cache : IRouteCache,
                     // todo worth working out is the best route?
                 }
             } else if (estimateRouteScore(currentRoute) < bestScore) {
-                common.allDirections(testDirection.bind(null, map, previousMoves, currentRoute, newRoutes));
+                common.allDirections(testDirection.bind(null, map, previousMoves, currentRoute, newRoutes, options));
             }
         }
         for (i = topRoutesLength; i < routes.length; i++) {

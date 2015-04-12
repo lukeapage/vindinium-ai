@@ -1,6 +1,7 @@
 import strategyType = require("../strategy-type");
 import turnState = require("../turn-state");
 import routing = require("../routing");
+import common = require("../common");
 
 function strategyKillEnemy(state : turnState.ITurnState) : strategyType.IStrategyResult[] {
     for (var i = 0; i < state.enemyList.length; i++) {
@@ -19,15 +20,6 @@ function strategyKillEnemy(state : turnState.ITurnState) : strategyType.IStrateg
             //      is too keen at attacking enemy when mines are near by
             //      should work out if they can get away - or store if a hero is successful at running away
 
-            // instead of chasing, assume that enemy will head towards a tavern
-            // if we are closer to tavern
-            //   if the distance to the enemy is 1
-            //     that means we killed the enemy a bit. assume it moves towards a tavern
-            //     work out enemy best route to tavern
-            //     preference that direction
-            //   else if the distance to the enemy is > 1
-            //       preference a direction that keeps us closest to a tavern
-
             var enemyRouteFromSpawnPos = state.routeTo(enemy.position, enemy.spawnPos);
             var enemyMovesFromSpawnPos = enemyRouteFromSpawnPos ? enemyRouteFromSpawnPos.moves : Infinity;
 
@@ -44,13 +36,61 @@ function strategyKillEnemy(state : turnState.ITurnState) : strategyType.IStrateg
 
             var movesToTavern = routeToTavern ? routeToTavern.moves : Infinity;
             var enemyMovesToTavern = enemyRouteToTavern ? enemyRouteToTavern.moves : Infinity;
+            var weAreCloserToTavern = movesToTavern <= enemyMovesToTavern;
 
-            var closeness = Math.max(100, ((6 * 1/*enemy.goldMines.count*/) - routeToEnemy.moves) * 20);
-            var weAreCloserToTavern = movesToTavern <= enemyMovesToTavern ? 100 :
+            var directionToKillEnemy = routeToEnemy.initialDir;
+
+            if (routeToEnemy.moves === 1) {
+                directionToKillEnemy = "";
+            }
+            else if (routeToTavern && routeToEnemy.moves === 2) {
+                //   else if the distance to the enemy is > 1
+                //       preference a direction that keeps us closest to a tavern
+                var directionOptions : strategyType.IStrategyResult[] = [];
+                common.allDirections(function (dx : number, dy : number, dir : string) : void {
+                    var x = state.hero.pos.x + dx,
+                        y = state.hero.pos.y + dy,
+                        pos = {x: x, y: y};
+                    if (!dir || common.canMoveToTile(state.map, x, y)) {
+
+                        var routeToTavernNow = state.routeTo(pos, enemyRouteToTavern.positionTo,
+                            { excludeHero: String(state.hero.id) });
+                        var routeToEnemyNow = state.routeTo(pos, enemy.position,
+                            { excludeHero: String(state.hero.id) });
+
+                        // todo: don't see how this can be null, but it happens
+                        var movesToTavernNow = routeToTavernNow ? routeToTavernNow.moves : Infinity;
+                        var movesToEnemyNow = routeToEnemyNow ? routeToEnemyNow.moves : Infinity;
+
+                        var distanceToEnemyDiff = movesToEnemyNow - routeToEnemy.moves;
+                        var distanceToTavernDiff = movesToTavernNow - movesToTavern;
+                        var score = (distanceToEnemyDiff * 1) + (distanceToTavernDiff * 2);
+
+                        // console.log(" option - " + dir + " - " + score);
+                        directionOptions.push({ dir: dir, score: score });
+                    }
+                }, true);
+                directionOptions.sort(function(a : strategyType.IStrategyResult, b : strategyType.IStrategyResult) : number {
+                    if (a.score < b.score) {
+                        return -1;
+                    } else if (a.score > b.score) {
+                        return 1;
+                    }
+                    return 0;
+                });
+                if (directionOptions.length) {
+                    directionToKillEnemy = directionOptions[0].dir;
+                }
+            }
+
+            var closenessScore = Math.max(100, (6 - routeToEnemy.moves) * 20);
+            var liklihoodOfSuccessScore = weAreCloserToTavern ? 100 :
                 enemyMovesToTavern === 1 ? -100 :
                     enemy.crashed ? 100 : 0;
+            var score = ((closenessScore + liklihoodOfSuccessScore) / 2) + enemy.goldMines.count;
 
-            return [{score: (closeness + weAreCloserToTavern) / 2, dir: routeToEnemy.initialDir}];
+            console.log("kill enemy - " + (score) + " - " + directionToKillEnemy);
+            return [{score: score, dir: directionToKillEnemy}];
         }
     }
     return [];

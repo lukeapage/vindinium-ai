@@ -7,7 +7,7 @@ function strategyRandom(state : turnState.ITurnState) : strategyType.IStrategyRe
     var dirs = "";
 
     common.allDirections(function(vx : number, vy : number, dir : string) : void {
-        if (common.canMoveToTile(state.map, state.hero.pos.x, state.hero.pos.y, true, true)) {
+        if (common.canMoveToTile(state.map, state.hero.pos.x, state.hero.pos.y, { taverns: true, goldMines: true })) {
             dirs += dir;
         }
     });

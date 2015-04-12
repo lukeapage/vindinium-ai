@@ -7,6 +7,7 @@ function strategyHeal(state : turnState.ITurnState) : strategyType.IStrategyResu
         var tavernClose = route.moves < 2;
         var healthBelowJustRecharged = state.hero.life < 97;
         var score = tavernClose && healthBelowJustRecharged ? 200 : 45;
+        console.log("heal - " + (score) + " - " + route.initialDir);
         return [{score: score, dir: route.initialDir}];
     }
     return [];

@@ -21,6 +21,7 @@ function strategyGetGoldMine(state : turnState.ITurnState) : strategyType.IStrat
 
         if (canSurvive) {
             var closeness = Math.max(100, ((6 * 1/*enemy.goldMines.count*/) - route.moves) * 20) / 2;
+            console.log("get gold mine - " + (50 + closeness) + " - " + route.initialDir);
             return [{score: 50 + closeness, dir: route.initialDir}];
         }
     }

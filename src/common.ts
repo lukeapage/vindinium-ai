@@ -30,7 +30,16 @@ export function sortPositionsByCrowDistance(p1 : VPosition, list : VPosition[]) 
     });
 }
 
-export function canMoveToTile(map : string[][], x : number, y : number, taverns ?: boolean, goldMines ?: boolean) : boolean {
+export interface ICanMoveToOptions {
+    excludeHero ? : string;
+    taverns ? : boolean;
+    goldMines ? : boolean;
+}
+
+export function canMoveToTile(map : string[][], x : number, y : number, options ? : ICanMoveToOptions) : boolean {
+
+    options = options || {};
+
     if (x < 0 || x >= map[0].length) {
         return false;
     }
@@ -41,12 +50,15 @@ export function canMoveToTile(map : string[][], x : number, y : number, taverns 
         return false;
     }
     if (map[y][x][0] === legend.heroStartsWith) {
+        if (map[y][x][1] === options.excludeHero) {
+            return true;
+        }
         return false;
     }
-    if (!goldMines && map[y][x][0] === legend.goldMineStartsWith) {
+    if (!options.goldMines && map[y][x][0] === legend.goldMineStartsWith) {
         return false;
     }
-    if (!taverns && map[y][x] === legend.tavern) {
+    if (!options.taverns && map[y][x] === legend.tavern) {
         return false;
     }
     return true;

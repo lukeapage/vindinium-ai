@@ -1,6 +1,7 @@
 import map = require("./map");
 import enemyData = require("./enemy-data");
 import routing = require("./routing");
+import common = require("./common");
 import nearestDirection = require("./nearest-direction");
 
 export interface IPlaces {
@@ -16,7 +17,10 @@ export interface ITurnState {
     enemies : enemyData.IMappedEnemies;
     enemyList : enemyData.IEnemy[];
     stats : IStats;
-    routeTo : (positionFrom : VPosition, positionTo : VPosition, routeScorer ? : () => number) => routing.IRoute;
+    routeTo : (positionFrom : VPosition,
+               positionTo : VPosition,
+               options ? : common.ICanMoveToOptions,
+               routeScorer ? : () => number) => routing.IRoute;
     nearestDirection : (positionFrom : VPosition, positionsTo : VPosition[]) => routing.IRoute;
 };
 
