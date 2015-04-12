@@ -4,7 +4,7 @@
 import strategyRandom = require("../strategies/random");
 import strategyRunner = require("../strategy-runner");
 
-function bot(state: VState, callback : (error: string, direction: string) => void) : void {
+function bot(state : VState, callback : (error : string, direction : string) => void) : void {
 
     strategyRunner(state, callback, strategyRandom);
 }
@@ -12,5 +12,7 @@ function bot(state: VState, callback : (error: string, direction: string) => voi
 export = bot;
 
 if (require.main === module) {
+    /* tslint:disable:no-var-requires */
     require('vindinium-client').cli(bot);
+    /* tslint:enable:no-var-requires */
 }

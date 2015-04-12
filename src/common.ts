@@ -12,17 +12,15 @@ export function distance(p1 : VPosition, p2 : VPosition) : number {
     return dimensionDistance(p1.x, p2.x) + dimensionDistance(p1.y, p2.y);
 }
 
-export interface DistancePositionInfo {
-    distance: number;
-    position: VPosition;
+export interface IDistancePositionInfo {
+    distance : number;
+    position : VPosition;
 };
 
-export function sortPositionsByCrowDistance(p1 : VPosition, list : VPosition[]) : DistancePositionInfo[] {
-    var x = p1.x;
-    var y = p1.y;
-    return list.map(function(position) {
+export function sortPositionsByCrowDistance(p1 : VPosition, list : VPosition[]) : IDistancePositionInfo[] {
+    return list.map(function(position : VPosition) : IDistancePositionInfo {
         return { distance: distance(p1, position), position: position};
-    }).sort(function(a, b) {
+    }).sort(function(a : IDistancePositionInfo, b : IDistancePositionInfo) : number {
         if (a.distance < b.distance) {
             return -1;
         } else if (a.distance > b.distance) {
@@ -54,7 +52,7 @@ export function canMoveToTile(map : string[][], x : number, y : number, taverns 
     return true;
 }
 
-export function allDirections(func : ( x: number, y: number, dir: string) => void, includeStay? : boolean) : void {
+export function allDirections(func : ( x : number, y : number, dir : string) => void, includeStay ? : boolean) : void {
     func( 0, -1, "n");
     func( 0,  1, "s");
     func( 1,  0, "e");
@@ -64,7 +62,7 @@ export function allDirections(func : ( x: number, y: number, dir: string) => voi
     }
 }
 
-export function find<T>(list : T[], predicate : (item : T, index? : number, list?: T[]) => boolean) : T {
+export function find<T>(list : T[], predicate : (item : T, index ? : number, list ? : T[]) => boolean) : T {
     var value : T;
 
     for (var i = 0; i < list.length; i++) {

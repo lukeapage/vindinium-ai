@@ -1,3 +1,5 @@
+"use strict";
+
 /// <reference path='../../typings/node/node.d.ts' />
 /// <reference path='../../typings/vindinium/vindinium.d.ts' />
 
@@ -7,7 +9,7 @@ import strategyGetGoldMine = require("../strategies/get-gold-mine");
 import strategyRunAway = require("../strategies/run-away");
 import strategyRunner = require("../strategy-runner");
 
-function bot(state: VState, callback : (error: string, direction: string) => void) : void {
+function bot(state : VState, callback : (error : string, direction : string) => void) : void {
 
     strategyRunner(state, callback, strategyKillEnemy, strategyHeal, strategyGetGoldMine, strategyRunAway);
 }
@@ -15,5 +17,7 @@ function bot(state: VState, callback : (error: string, direction: string) => voi
 export = bot;
 
 if (require.main === module) {
-	require('vindinium-client').cli(bot);
+    /* tslint:disable:no-var-requires */
+    require('vindinium-client').cli(bot);
+    /* tslint:enable:no-var-requires */
 }

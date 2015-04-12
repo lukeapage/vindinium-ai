@@ -1,8 +1,7 @@
-import common = require("../common");
 import strategyType = require("../strategy-type");
 import turnState = require("../turn-state");
 
-function strategyHeal(state : turnState.TurnState): strategyType.StrategyResult[] {
+function strategyHeal(state : turnState.ITurnState) : strategyType.IStrategyResult[] {
     var route = state.nearestDirection(state.hero.pos, state.places.taverns);
     if (route) {
         var tavernClose = route.moves < 2;

@@ -1,35 +1,37 @@
 import strategyType = require("./strategy-type");
 import turnState = require("./turn-state");
 
-interface Direction {
-    dir: string;
-    highScore: number;
-    totalScore: number;
+interface IStrategyResultDirection {
+    dir : string;
+    highScore : number;
+    totalScore : number;
 }
 
-interface DirectionMap {
-    [dir: string] : Direction;
+interface IStrategyResultDirectionMap {
+    [dir : string] : IStrategyResultDirection;
 }
 
 function strategyRunner(
-    gameState: VState,
-    callback : (error: string, direction: string) => void,
-    ...strategies: ((state: turnState.TurnState) => strategyType.StrategyResult[])[]) : void {
+    gameState : VState,
+    callback : (error : string, direction : string) => void,
+    ...strategies : ((state : turnState.ITurnState) => strategyType.IStrategyResult[])[]) : void {
 
     var startTime = new Date().getTime();
 
     try {
         var state = turnState.parse(gameState);
 
-        var directionMap : DirectionMap = {};
-        strategies.reduce(function (resultList, strategy) {
+        var directionMap : IStrategyResultDirectionMap = {};
+        strategies.reduce(function (resultList : strategyType.IStrategyResult[],
+                                    strategy : (state : turnState.ITurnState) => strategyType.IStrategyResult[]) :
+                                        strategyType.IStrategyResult[] {
                 var result = strategy(state);
                 if (!result || typeof result.length !== "number") {
                     console.log("Received bad result from strategy");
                 }
                 return resultList.concat(result);
             }, [])
-            .forEach(function(strategy : strategyType.StrategyResult) {
+            .forEach(function(strategy : strategyType.IStrategyResult) : void {
                 if (!directionMap[strategy.dir]) {
                     directionMap[strategy.dir] = { dir: strategy.dir, totalScore: strategy.score, highScore: strategy.score };
                 } else {
@@ -40,11 +42,11 @@ function strategyRunner(
                     }
                 }
             });
-        var possibilities : Direction[] = Object.keys(directionMap)
-            .map(function(key) {
+        var possibilities : IStrategyResultDirection[] = Object.keys(directionMap)
+            .map(function(key : string) : IStrategyResultDirection {
                 return directionMap[key];
             })
-            .sort(function (a, b) {
+            .sort(function (a : IStrategyResultDirection, b : IStrategyResultDirection) : number {
                 if (a.highScore < b.highScore) {
                     return 1;
                 } else if (a.highScore > b.highScore) {
@@ -73,7 +75,7 @@ function strategyRunner(
             return;
         }
     }
-    catch(e) {
+    catch (e) {
         console.log("Exception occurred during strategy processing");
         console.log(e.stack);
         console.dir(e);

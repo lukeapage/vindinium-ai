@@ -1,36 +1,35 @@
-import common = require("./common");
 import map = require("./map");
 
-export interface Enemy {
-    id: number;
-    goldMines: map.EnemyGoldMineData;
-    position: VPosition;
-    spawnPos: VPosition;
-    crashed: boolean;
-    life: number;
-    isTagTeam: boolean;
+export interface IEnemy {
+    id : number;
+    goldMines : map.IEnemyGoldMineData;
+    position : VPosition;
+    spawnPos : VPosition;
+    crashed : boolean;
+    life : number;
+    isTagTeam : boolean;
 }
 
-export interface EnemyData {
-    list: Enemy[];
-    mapped: MappedEnemies;
+export interface IEnemyData {
+    list : IEnemy[];
+    mapped : IMappedEnemies;
 }
 
-export interface MappedEnemies {
-    [enemyId: string]: Enemy;
+export interface IMappedEnemies {
+    [enemyId : string] : IEnemy;
 }
 
-export function parseEnemyData(hero : VHero, mapData : map.MapData, heroes : VHero[]) : EnemyData {
-    var enemiesMapped : MappedEnemies = {};
+export function parseEnemyData(hero : VHero, mapData : map.IMapData, heroes : VHero[]) : IEnemyData {
+    var enemiesMapped : IMappedEnemies = {};
 
     var enemyList = heroes
-        .filter(function(heroOrEnemy) {
+        .filter(function(heroOrEnemy : VHero) : boolean {
             if (String(heroOrEnemy.id) === String(hero.id)) {
                 return false;
             }
             return true;
         })
-        .map(function(enemy) {
+        .map(function(enemy : VHero) : IEnemy {
             var enemyId = enemy.id;
             var enemyPosition = mapData.enemies[enemyId];
 
@@ -38,7 +37,7 @@ export function parseEnemyData(hero : VHero, mapData : map.MapData, heroes : VHe
                 throw new Error("Enemy " + enemyId + " is not on the map!");
             }
 
-            var parsedEnemy : Enemy = {
+            var parsedEnemy : IEnemy = {
                 id: enemyId,
                 goldMines: mapData.enemyGoldMines[enemyId] || { count: 0, positions: [] },
                 position: enemyPosition,

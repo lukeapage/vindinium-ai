@@ -2,16 +2,16 @@ import common = require("../common");
 import strategyType = require("../strategy-type");
 import turnState = require("../turn-state");
 
-function strategyRunAway(state : turnState.TurnState): strategyType.StrategyResult[] {
+function strategyRunAway(state : turnState.ITurnState) : strategyType.IStrategyResult[] {
 
-    var returnStrategies : strategyType.StrategyResult[] = [];
+    var returnStrategies : strategyType.IStrategyResult[] = [];
     if (state.hero.mineCount === 0) { return returnStrategies; }
 
-    // TODO: or if we are closer to a free mine now than the start position (do with score?)
-    // TODO: or multiple enemies, but with combined higher health
-    // TODO: if a tavern is further away than re-spawning and re-capturing mine, then die!
+    // todo: or if we are closer to a free mine now than the start position (do with score?)
+    // todo: or multiple enemies, but with combined higher health
+    // todo: if a tavern is further away than re-spawning and re-capturing mine, then die!
 
-    for(var i = 0; i < state.enemyList.length; i++) {
+    for (var i = 0; i < state.enemyList.length; i++) {
         var enemy = state.enemyList[i];
         if (enemy.life > state.hero.life) {
 
@@ -37,7 +37,7 @@ function strategyRunAway(state : turnState.TurnState): strategyType.StrategyResu
                 }
             }
 
-            common.allDirections(function(x, y, dir) {
+            common.allDirections(function(x : number, y : number, dir : string) : void {
                 if (forbiddenDirections.indexOf(dir) < 0) {
                     if (!dir || common.canMoveToTile(state.map, state.hero.pos.x + x, state.hero.pos.y + y, true)) {
                         returnStrategies.push({ score: dir ? 200 : 199, dir: dir });

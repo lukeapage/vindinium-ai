@@ -1,16 +1,15 @@
-import common = require("../common");
 import turnState = require("../turn-state");
 import strategyType = require("../strategy-type");
 
-function strategyGetGoldMine(state : turnState.TurnState) : strategyType.StrategyResult[] {
+function strategyGetGoldMine(state : turnState.ITurnState) : strategyType.IStrategyResult[] {
 
-    //TODO prioritise goldmines next to each other?
-    //     prioritise goldmines next to taverns?
-    //     prioritise free goldmines vs enemy goldmines
+    // todo prioritise goldmines next to each other?
+    //      prioritise goldmines next to taverns?
+    //      prioritise free goldmines vs enemy goldmines
 
     var potentiolGoldMines = [].concat(state.places.freeGoldMines);
 
-    for(var i = 0; i < state.enemyList.length; i++) {
+    for (var i = 0; i < state.enemyList.length; i++) {
         var enemy = state.enemyList[i];
         if (enemy.isTagTeam) { continue; }
         potentiolGoldMines = potentiolGoldMines.concat(enemy.goldMines.positions);

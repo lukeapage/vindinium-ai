@@ -1,44 +1,44 @@
 import common = require("./common");
 
-export interface Route {
-    initialDir: string;
-    positionFrom: VPosition;
-    positionTo: VPosition;
-    currentPosition: VPosition;
-    moves: number;
-    distance: number;
-    score: number;
+export interface IRoute {
+    initialDir : string;
+    positionFrom : VPosition;
+    positionTo : VPosition;
+    currentPosition : VPosition;
+    moves : number;
+    distance : number;
+    score : number;
 }
 
-interface RouteCache {
-    [cacheKey : string] : Route;
+interface IRouteCache {
+    [cacheKey : string] : IRoute;
 }
 
-interface PreviousMove {
-    pos: VPosition;
-    moves: number;
+interface IPreviousMove {
+    pos : VPosition;
+    moves : number;
 }
 
-interface PreviousMovesCache {
-    [cacheKey : string] : PreviousMove;
+interface IPreviousMovesCache {
+    [cacheKey : string] : IPreviousMove;
 }
 
-function scorePosition(oldRoute : Route) : number {
+function scorePosition(oldRoute : IRoute) : number {
     return oldRoute ? oldRoute.score + 1 : 1;
 }
 
-function estimateRouteScore(route : Route) : number {
+function estimateRouteScore(route : IRoute) : number {
     return route.distance + route.score;
 }
 
 function testDirection(
             map : string[][],
-            previousMoves : PreviousMovesCache,
-            oldRoute : Route,
-            routes : Route[],
+            previousMoves : IPreviousMovesCache,
+            oldRoute : IRoute,
+            routes : IRoute[],
             movementX : number,
             movementY : number,
-            direction : string) {
+            direction : string) : void {
 
     var positionFrom = oldRoute.positionFrom;
     var positionTo = oldRoute.positionTo;
@@ -72,7 +72,7 @@ function testDirection(
     }
 }
 
-function routeSorter(a : Route, b : Route) : number {
+function routeSorter(a : IRoute, b : IRoute) : number {
     if (a.score > b.score) {
         return 1;
     }
@@ -88,11 +88,11 @@ function routeSorter(a : Route, b : Route) : number {
     return 0;
 }
 
-export function to(cache: RouteCache,
+export function to(cache : IRouteCache,
                    map : string[][],
                    positionFrom : VPosition,
                    positionTo : VPosition,
-                   routeScorer? : () => number) : Route {
+                   routeScorer ? : () => number) : IRoute {
 
     if (!positionFrom) {
         throw new Error("no position from");
@@ -107,11 +107,11 @@ export function to(cache: RouteCache,
         return cache[cacheKey];
     }
 
-    var routes : Route[] = [];
-    var previousMoves : PreviousMovesCache = {};
+    var routes : IRoute[] = [];
+    var previousMoves : IPreviousMovesCache = {};
     previousMoves[cacheKeyFrom] = {pos: positionFrom, moves: 0};
 
-    var startRoute : Route = {
+    var startRoute : IRoute = {
         positionFrom: positionFrom,
         currentPosition: positionFrom,
         positionTo: positionTo,
@@ -125,26 +125,27 @@ export function to(cache: RouteCache,
     routes.sort(routeSorter);
 
     var bestScore = Infinity;
-    //var totalDistance = common.distance(positionFrom, positionTo);
-    var fastestRoute : Route;
-    while(routes.length) {
-        var newRoutes : Route[] = [],
+    var fastestRoute : IRoute;
+    var i : number;
+    var currentRoute : IRoute;
+    while (routes.length) {
+        var newRoutes : IRoute[] = [],
             topRoutesLength = Math.min(2, routes.length);
-        for(var i = 0; i < topRoutesLength; i++) {
-            var currentRoute = routes[i];
+        for (i = 0; i < topRoutesLength; i++) {
+            currentRoute = routes[i];
             if (currentRoute.distance === 0) {
                 var currentRouteScore = currentRoute.score;
                 if (currentRouteScore < bestScore) {
                     fastestRoute = currentRoute;
                     bestScore = currentRouteScore;
-                    //TODO worth working out is the best route?
+                    // todo worth working out is the best route?
                 }
             } else if (estimateRouteScore(currentRoute) < bestScore) {
                 common.allDirections(testDirection.bind(null, map, previousMoves, currentRoute, newRoutes));
             }
         }
-        for(var i = topRoutesLength; i < routes.length; i++) {
-            var currentRoute = routes[i];
+        for (i = topRoutesLength; i < routes.length; i++) {
+            currentRoute = routes[i];
             if (estimateRouteScore(currentRoute) < bestScore) {
                 newRoutes.push(routes[i]);
             }

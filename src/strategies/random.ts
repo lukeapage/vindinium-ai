@@ -2,11 +2,11 @@ import common = require("../common");
 import strategyType = require("../strategy-type");
 import turnState = require("../turn-state");
 
-function strategyRandom(state : turnState.TurnState): strategyType.StrategyResult[] {
+function strategyRandom(state : turnState.ITurnState) : strategyType.IStrategyResult[] {
 
     var dirs = "";
 
-    common.allDirections(function(vx, vy, dir) {
+    common.allDirections(function(vx : number, vy : number, dir : string) : void {
         if (common.canMoveToTile(state.map, state.hero.pos.x, state.hero.pos.y, true, true)) {
             dirs += dir;
         }

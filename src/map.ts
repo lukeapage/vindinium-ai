@@ -1,28 +1,27 @@
 import legend = require("./legend");
-import map = require("./map");
 
-export interface MapData {
-    map: string[][];
-    taverns: VPosition[];
-    freeGoldMines: VPosition[];
-    enemyGoldMines: EnemyGoldMineDataMap;
-    enemies: EnemyPositionMap;
+export interface IMapData {
+    map : string[][];
+    taverns : VPosition[];
+    freeGoldMines : VPosition[];
+    enemyGoldMines : IEnemyGoldMineDataMap;
+    enemies : IEnemyPositionMap;
 }
 
-export interface EnemyGoldMineData {
-    count: number;
-    positions: VPosition[];
+export interface IEnemyGoldMineData {
+    count : number;
+    positions : VPosition[];
 }
 
-export interface EnemyGoldMineDataMap {
-    [enemy: string]: EnemyGoldMineData;
+export interface IEnemyGoldMineDataMap {
+    [enemy : string] : IEnemyGoldMineData;
 }
 
-export interface EnemyPositionMap {
-    [enemy: string]: VPosition;
+export interface IEnemyPositionMap {
+    [enemy : string] : VPosition;
 }
 
-export function parseMap(board : VBoard, heroid : number) : MapData {
+export function parseMap(board : VBoard, heroid : number) : IMapData {
 
     var size = board.size;
     var tiles = board.tiles;
@@ -34,15 +33,15 @@ export function parseMap(board : VBoard, heroid : number) : MapData {
     var map : string[][] = [];
     var taverns : VPosition[] = [];
     var freeGoldMines : VPosition[] = [];
-    var enemyGoldMines : EnemyGoldMineDataMap = {};
-    var enemies : EnemyPositionMap = {};
+    var enemyGoldMines : IEnemyGoldMineDataMap = {};
+    var enemies : IEnemyPositionMap = {};
     var i = 0;
-    for(var y = 0; y < size; y++) {
+    for (var y = 0; y < size; y++) {
         var row : string[] = [];
         map.push(row);
-        for(var x = 0; x < size; x++) {
+        for (var x = 0; x < size; x++) {
             var tile = tiles.substr(i, 2);
-            var position = {x:x, y:y};
+            var position = { x: x, y: y };
             if (tile === legend.tavern) {
                 taverns.push(position);
             } else if (tile[0] === legend.goldMineStartsWith && tile[1] !== String(heroid)) {
@@ -60,7 +59,7 @@ export function parseMap(board : VBoard, heroid : number) : MapData {
                 enemies[tile[1]] = position;
             }
             row.push(tile);
-            i+=2;
+            i += 2;
         }
     }
     return { map: map, taverns: taverns, freeGoldMines: freeGoldMines, enemyGoldMines: enemyGoldMines, enemies: enemies };

@@ -1,4 +1,4 @@
-export interface StrategyResult {
-    score: number;
-    dir: string;
+export interface IStrategyResult {
+    score : number;
+    dir : string;
 }

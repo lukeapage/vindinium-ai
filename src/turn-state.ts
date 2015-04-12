@@ -3,28 +3,28 @@ import enemyData = require("./enemy-data");
 import routing = require("./routing");
 import nearestDirection = require("./nearest-direction");
 
-export interface Places {
-    taverns: VPosition[];
-    freeGoldMines: VPosition[];
-    enemyGoldMines: map.EnemyGoldMineDataMap;
+export interface IPlaces {
+    taverns : VPosition[];
+    freeGoldMines : VPosition[];
+    enemyGoldMines : map.IEnemyGoldMineDataMap;
 };
 
-export interface TurnState {
-    map: string[][];
-    places: Places;
-    hero: VHero;
-    enemies: enemyData.MappedEnemies;
-    enemyList: enemyData.Enemy[];
-    stats: Stats;
-    routeTo: (positionFrom : VPosition, positionTo : VPosition, routeScorer? : () => number) => routing.Route;
-    nearestDirection: (positionFrom : VPosition, positionsTo: VPosition[]) => routing.Route;
+export interface ITurnState {
+    map : string[][];
+    places : IPlaces;
+    hero : VHero;
+    enemies : enemyData.IMappedEnemies;
+    enemyList : enemyData.IEnemy[];
+    stats : IStats;
+    routeTo : (positionFrom : VPosition, positionTo : VPosition, routeScorer ? : () => number) => routing.IRoute;
+    nearestDirection : (positionFrom : VPosition, positionsTo : VPosition[]) => routing.IRoute;
 };
 
-export interface Stats {
+export interface IStats {
 };
 
-export function parse(state : VState) : TurnState {
-    var mapData : map.MapData = map.parseMap(state.game.board, state.hero.id),
+export function parse(state : VState) : ITurnState {
+    var mapData : map.IMapData = map.parseMap(state.game.board, state.hero.id),
         heroPosition : VPosition = {x: state.hero.pos.y, y: state.hero.pos.x};
 
     var parsedEnemyData = enemyData.parseEnemyData(state.hero, mapData, state.game.heroes);

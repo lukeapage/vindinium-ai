@@ -1,10 +1,9 @@
-import common = require("../common");
 import strategyType = require("../strategy-type");
 import turnState = require("../turn-state");
 import routing = require("../routing");
 
-function strategyKillEnemy(state : turnState.TurnState): strategyType.StrategyResult[] {
-    for(var i = 0; i < state.enemyList.length; i++) {
+function strategyKillEnemy(state : turnState.ITurnState) : strategyType.IStrategyResult[] {
+    for (var i = 0; i < state.enemyList.length; i++) {
         var enemy = state.enemyList[i];
 
         if (enemy.isTagTeam) {
@@ -16,9 +15,18 @@ function strategyKillEnemy(state : turnState.TurnState): strategyType.StrategyRe
 
             if (!routeToEnemy) { continue; }
 
-            // TODO is not moving to block enemy
+            // todo is not moving to block enemy
             //      is too keen at attacking enemy when mines are near by
             //      should work out if they can get away - or store if a hero is successful at running away
+
+            // instead of chasing, assume that enemy will head towards a tavern
+            // if we are closer to tavern
+            //   if the distance to the enemy is 1
+            //     that means we killed the enemy a bit. assume it moves towards a tavern
+            //     work out enemy best route to tavern
+            //     preference that direction
+            //   else if the distance to the enemy is > 1
+            //       preference a direction that keeps us closest to a tavern
 
             var enemyRouteFromSpawnPos = state.routeTo(enemy.position, enemy.spawnPos);
             var enemyMovesFromSpawnPos = enemyRouteFromSpawnPos ? enemyRouteFromSpawnPos.moves : Infinity;
@@ -28,7 +36,7 @@ function strategyKillEnemy(state : turnState.TurnState): strategyType.StrategyRe
             }
 
             var enemyRouteToTavern = state.nearestDirection(enemy.position, state.places.taverns);
-            var routeToTavern : routing.Route;
+            var routeToTavern : routing.IRoute;
 
             if (enemyRouteToTavern) {
                 routeToTavern = state.routeTo(state.hero.pos, enemyRouteToTavern.positionTo);
