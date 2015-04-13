@@ -20,7 +20,7 @@ function getDirection(state) {
 
 describe('strategy', function() {
     it("works for test case 1", function() {
-        expect(getDirection(testState1)).to.equal("e"); // todo haven't actually checked what it should do
+        expect(getDirection(testState1)).to.equal("s"); // todo haven't actually checked what it should do
     });
     it("works for test case 2", function() {
         expect(getDirection(testState2)).to.equal("w"); // todo haven't actually checked what it should do

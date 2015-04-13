@@ -13,11 +13,14 @@ function strategyRunAway(state : turnState.ITurnState) : strategyType.IStrategyR
 
     for (var i = 0; i < state.enemyList.length; i++) {
         var enemy = state.enemyList[i];
-        if (enemy.life > state.hero.life) {
+        if (enemy.life > state.hero.life || state.hero.life < 21) {
 
             var routeToEnemy = state.routeTo(state.hero.pos, enemy.position);
 
-            if (!routeToEnemy || routeToEnemy.moves > 2) { continue; }
+            if (!routeToEnemy || routeToEnemy.moves > 3) {
+                continue;
+            }
+            if (routeToEnemy.moves === 2 && enemy.life <= 20) { continue; } // we should move and kill it probably
             if (enemy.isTagTeam && routeToEnemy.moves === 2) { continue; } // ignore tag team member unless next to
 
             var forbiddenDirections : string[] = [];
