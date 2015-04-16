@@ -24,10 +24,13 @@ function strategyGetGoldMine(state : turnState.ITurnState) : strategyType.IStrat
         if (route) {
             var canSurvive = state.hero.life - (20 + route.moves) > 0;
 
+            var myMovesGeneralised = Math.round(route.moves / 5);
             for (var j = 0; j < state.enemyList.length; j++) {
                 var routeToEnemy = state.routeTo(enemy.position, goldMinePos);
                 if (routeToEnemy) {
-                    if (routeToEnemy.moves > route.moves) {
+                    // generalise the moves so that it doesn't flip-flop when an enemy moves away or towards one
+                    var enemyMovesGeneralised = Math.round(routeToEnemy.moves / 5);
+                    if (enemyMovesGeneralised > myMovesGeneralised) {
                         closerToMe++;
                     } else {
                         closerToMe--;

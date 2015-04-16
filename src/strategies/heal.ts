@@ -2,6 +2,7 @@ import strategyType = require("../strategy-type");
 import turnState = require("../turn-state");
 
 function strategyHeal(state : turnState.ITurnState) : strategyType.IStrategyResult[] {
+    // todo plot a route to a tavern that doesn't go near enemies?
     var route = state.nearestDirection(state.hero.pos, state.places.taverns);
     if (route) {
         var tavernClose = route.moves < 2;
