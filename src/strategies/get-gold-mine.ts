@@ -8,24 +8,41 @@ function strategyGetGoldMine(state : turnState.ITurnState) : strategyType.IStrat
     //      prioritise free goldmines vs enemy goldmines
 
     var potentiolGoldMines = [].concat(state.places.freeGoldMines);
+    var results : strategyType.IStrategyResult[] = [];
+    var i : number;
 
-    for (var i = 0; i < state.enemyList.length; i++) {
+    for (i = 0; i < state.enemyList.length; i++) {
         var enemy = state.enemyList[i];
         if (enemy.isTagTeam) { continue; }
         potentiolGoldMines = potentiolGoldMines.concat(enemy.goldMines.positions);
     }
 
-    var route = state.nearestDirection(state.hero.pos, potentiolGoldMines);
-    if (route) {
-        var canSurvive = state.hero.life - (20 + route.moves) > 0;
+    for (i = 0; i < potentiolGoldMines.length; i++) {
+        var goldMinePos = potentiolGoldMines[i];
+        var route = state.routeTo(state.hero.pos, goldMinePos);
+        var closerToMe = 0;
+        if (route) {
+            var canSurvive = state.hero.life - (20 + route.moves) > 0;
 
-        if (canSurvive) {
-            var closeness = Math.max(100, ((6 * 1/*enemy.goldMines.count*/) - route.moves) * 20) / 2;
-            console.log("get gold mine - " + (50 + closeness) + " - " + route.initialDir);
-            return [{score: 50 + closeness, dir: route.initialDir}];
+            for (var j = 0; j < state.enemyList.length; j++) {
+                var routeToEnemy = state.routeTo(enemy.position, goldMinePos);
+                if (routeToEnemy) {
+                    if (routeToEnemy.moves > route.moves) {
+                        closerToMe++;
+                    } else {
+                        closerToMe--;
+                    }
+                }
+            }
+
+            if (canSurvive) {
+                // var closeness = Math.max(100, ((6 * 1/*enemy.goldMines.count*/) - route.moves) * 20) / 2;
+                // console.log("get gold mine - " + (50 + closeness) + " - " + route.initialDir);
+                results.push({score: 100 + closerToMe - route.moves, dir: route.initialDir});
+            }
         }
     }
-    return [];
+    return results;
 }
 
 export = strategyGetGoldMine;

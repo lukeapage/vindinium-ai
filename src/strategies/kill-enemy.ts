@@ -89,7 +89,7 @@ function strategyKillEnemy(state : turnState.ITurnState) : strategyType.IStrateg
                     enemy.crashed ? 100 : 0;
             var score = ((closenessScore + liklihoodOfSuccessScore) / 2) + enemy.goldMines.count;
 
-            console.log("kill enemy - " + (score) + " - " + directionToKillEnemy);
+            // console.log("kill enemy - " + (score) + " - " + directionToKillEnemy);
             return [{score: score, dir: directionToKillEnemy}];
         }
     }
