@@ -11,6 +11,8 @@ interface IStrategyResultDirectionMap {
     [dir : string] : IStrategyResultDirection;
 }
 
+var slowTurnfullConfigs = 0;
+
 function strategyRunner(
     gameState : VState,
     callback : (error : string, direction : string) => void,
@@ -66,7 +68,9 @@ function strategyRunner(
         if (diffTime > 100) {
             console.log();
             console.log("Over 50ms response time - " + diffTime + "ms");
-            console.log(JSON.stringify(gameState, null, 2));
+            if (slowTurnfullConfigs++ < 3) {
+                console.log(JSON.stringify(gameState, null, 2));
+            }
             console.log();
         }
 

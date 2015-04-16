@@ -104,7 +104,7 @@ function strategyKillEnemy(state : turnState.ITurnState) : strategyType.IStrateg
 
         // todo: if we are winning don't bother ?
 
-        console.log("kill enemy - " + (score) + " - " + directionToKillEnemy);
+            // console.log("kill enemy - " + (score) + " - " + directionToKillEnemy);
         return [{score: score, dir: directionToKillEnemy}];
     }
     return [];

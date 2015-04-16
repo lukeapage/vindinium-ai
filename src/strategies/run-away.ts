@@ -44,7 +44,7 @@ function strategyRunAway(state : turnState.ITurnState) : strategyType.IStrategyR
                 if (forbiddenDirections.indexOf(dir) < 0) {
                     if (!dir || common.canMoveToTile(state.map, state.hero.pos.x + x, state.hero.pos.y + y, { taverns: true })) {
                         var score = dir ? 200 : 199;
-                        console.log("run away - " + score + " - " + dir);
+                        // console.log("run away - " + score + " - " + dir);
                         returnStrategies.push({ score: score, dir: dir });
                     }
                 }
