@@ -17,15 +17,16 @@
   },
   "homepage": "https://github.com/lukeapage/virdinium-ai",
   "dependencies": {
-    "grunt-env": "^0.4.4",
-    "grunt-istanbul": "^0.5.0",
-    "grunt-shell": "^1.1.2",
-    "grunt-ts": "^4.0.1",
-    "vindinium-client": "^2.0.1",
+    "copy-paste": "^1.0.2",
     "grunt": "^0.4.5",
     "grunt-contrib-clean": "^0.6.0",
+    "grunt-env": "^0.4.4",
+    "grunt-istanbul": "^0.5.0",
     "grunt-mocha-test": "^0.12.7",
-    "load-grunt-config": "^0.16.0"
+    "grunt-shell": "^1.1.2",
+    "grunt-ts": "^4.0.1",
+    "load-grunt-config": "^0.16.0",
+    "vindinium-client": "^2.0.1"
   },
   "devDependencies": {
     "chai": "^2.2.0",

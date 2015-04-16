@@ -12,11 +12,21 @@ interface IStrategyResultDirectionMap {
 }
 
 var slowTurnfullConfigs = 0;
+var currentUrl : string;
 
 function strategyRunner(
     gameState : VState,
     callback : (error : string, direction : string) => void,
     ...strategies : ((state : turnState.ITurnState) => strategyType.IStrategyResult[])[]) : void {
+
+    if (currentUrl !== gameState.viewUrl) {
+        currentUrl = gameState.viewUrl;
+        try {
+            require("copy-paste").copy(currentUrl);
+        } catch(e) {
+            console.log("failed to copy url");
+        }
+    }
 
     var startTime = new Date().getTime();
 

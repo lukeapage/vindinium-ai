@@ -39,9 +39,9 @@ function strategyGetGoldMine(state : turnState.ITurnState) : strategyType.IStrat
             }
 
             if (canSurvive) {
-                // var closeness = Math.max(100, ((6 * 1/*enemy.goldMines.count*/) - route.moves) * 20) / 2;
-                // console.log("get gold mine - " + (50 + closeness) + " - " + route.initialDir);
-                results.push({score: 100 + closerToMe - route.moves, dir: route.initialDir});
+                var score = 100 + closerToMe - route.moves;
+                // console.log("get gold mine - " + (score) + " - " + route.initialDir);
+                results.push({score: score, dir: route.initialDir});
             }
         }
     }

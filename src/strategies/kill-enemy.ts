@@ -40,7 +40,7 @@ function strategyKillEnemy(state : turnState.ITurnState) : strategyType.IStrateg
 
         var directionToKillEnemy = routeToEnemy.initialDir;
 
-        if (enemy.life > 20 && enemy.life > state.hero.life && routeToEnemy.moves > 2) {
+        if (((enemy.life > 20 && enemy.life > state.hero.life) || state.hero.life <= 20 + routeToEnemy.moves) && routeToEnemy.moves > 2) {
             continue;
         }
 
@@ -67,15 +67,18 @@ function strategyKillEnemy(state : turnState.ITurnState) : strategyType.IStrateg
                     var movesToTavernNow = routeToTavernNow ? routeToTavernNow.moves : Infinity;
                     var movesToEnemyNow = routeToEnemyNow ? routeToEnemyNow.moves : Infinity;
 
-                    var distanceToEnemyDiff = movesToEnemyNow - routeToEnemy.moves;
-                    var distanceToTavernDiff = movesToTavernNow - movesToTavern;
+                    var distanceToEnemyDiff = movesToEnemyNow - routeToEnemy.moves; // -1 = closer
+                    var distanceToTavernDiff = movesToTavernNow - movesToTavern; // -1 = closer
                     var score : number;
                     // if we are more than 20 more life we don't care who its first
                     if (routeToEnemy.moves === 2 || state.hero.life - enemy.life >= 20) {
-                        score = (distanceToEnemyDiff * 1) + (distanceToTavernDiff * 2);
+                        score = (distanceToEnemyDiff * 2) + distanceToTavernDiff;
                         successScore = 100;
                     } else {
-                        score = (distanceToEnemyDiff === 1 ? 2 : 0) + distanceToTavernDiff;
+                        score = (distanceToEnemyDiff === -1 ?  // if enemy is closer
+                                        2 :                    // do not choose this option
+                                        0) +                   // enemy further - doesn't matter
+                                distanceToTavernDiff;
                         successScore = 50;
                     }
 
@@ -96,6 +99,10 @@ function strategyKillEnemy(state : turnState.ITurnState) : strategyType.IStrateg
             }
         }
 
+        if (enemy.goldMines.count === 0) {
+            successScore = 0;
+        }
+
         var closenessScore = Math.max(100, (6 - routeToEnemy.moves) * 20);
         var liklihoodOfSuccessScore = weAreCloserToTavern ? successScore :
             enemyMovesToTavern === 1 ? -100 :
@@ -104,7 +111,7 @@ function strategyKillEnemy(state : turnState.ITurnState) : strategyType.IStrateg
 
         // todo: if we are winning don't bother ?
 
-            // console.log("kill enemy - " + (score) + " - " + directionToKillEnemy);
+        // console.log("kill enemy - " + (score) + " - " + directionToKillEnemy);
         return [{score: score, dir: directionToKillEnemy}];
     }
     return [];
