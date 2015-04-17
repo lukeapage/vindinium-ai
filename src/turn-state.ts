@@ -22,6 +22,7 @@ export interface ITurnState {
                options ? : common.ICanMoveToOptions,
                routeScorer ? : () => number) => routing.IRoute;
     nearestDirection : (positionFrom : VPosition, positionsTo : VPosition[]) => routing.IRoute;
+    lastDir : string
 };
 
 export interface IStats {
@@ -59,7 +60,8 @@ export function parse(state : VState) : ITurnState {
         stats: {
         },
         routeTo: routeTo,
-        nearestDirection: nearestDirection.bind(null, routeTo)
+        nearestDirection: nearestDirection.bind(null, routeTo),
+        lastDir: state.hero.lastDir ? state.hero.lastDir[0].toLowerCase() : ""
     };
 }
 

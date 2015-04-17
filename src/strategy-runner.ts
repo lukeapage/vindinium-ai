@@ -11,6 +11,20 @@ interface IStrategyResultDirectionMap {
     [dir : string] : IStrategyResultDirection;
 }
 
+function opposite(dir : string) : string {
+    switch(dir) {
+        case "n":
+            return "s";
+        case "s":
+            return "n";
+        case "e":
+            return "w";
+        case "w":
+            return "e";
+    }
+    return "";
+}
+
 var slowTurnfullConfigs = 0;
 var currentUrl : string;
 
@@ -62,6 +76,14 @@ function strategyRunner(
                 if (a.highScore < b.highScore) {
                     return 1;
                 } else if (a.highScore > b.highScore) {
+                    return -1;
+                }
+                var aOpposite = a.dir === opposite(state.lastDir),
+                    bOpposite = b.dir === opposite(state.lastDir);
+                if (aOpposite && ! bOpposite) {
+                    return 1;
+                }
+                if (bOpposite && ! aOpposite) {
                     return -1;
                 }
                 if (a.totalScore < b.totalScore) {
